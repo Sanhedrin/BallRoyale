@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public partial class Ball : MonoBehaviour {
+public partial class Ball : MonoBehaviour
+{
+
+    private bool m_Grounded = true;
 
 	[SerializeField]
 	private float m_MoveSpeed = 20;
@@ -36,9 +39,27 @@ public partial class Ball : MonoBehaviour {
         {
             m_RigidBody.AddForce(Vector3.back * m_MoveSpeed);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, Vector3.down, -1))
+        if (Input.GetKeyDown(KeyCode.Space) && m_Grounded)
         {
             m_RigidBody.AddForce(Vector3.up * m_JumpSpeed);
         }
     }
+
+    public void OnCollisionEnter(Collision i_TheCollision)
+    {
+        if (i_TheCollision.gameObject.name == "Cube")
+        {
+            m_Grounded = true;
+        }
+    }
+
+    public void OnCollisionExit(Collision i_TheCollision)
+    {
+        if (i_TheCollision.gameObject.name == "Cube")
+        {
+            m_Grounded = false;
+        }
+    }
+
+    
 }
