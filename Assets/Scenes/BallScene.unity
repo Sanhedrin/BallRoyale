@@ -166,8 +166,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 427970879}
-  m_LocalRotation: {x: .714473724, y: 0, z: 0, w: .699662328}
-  m_LocalPosition: {x: -1.1683799, y: 23.3799992, z: .74000001}
+  m_LocalRotation: {x: .707107484, y: 0, z: 0, w: .707106113}
+  m_LocalPosition: {x: -2.92062759e-06, y: 30.6543121, z: .000553924881}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - 65: {fileID: 858804830}
   - 23: {fileID: 858804829}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Plain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,7 +200,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c144bcde30bd49d4ca73867bbe4c2638, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -240,8 +240,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 858804828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .0299999993, y: -1.08000004, z: 0}
-  m_LocalScale: {x: 50, y: -1.00999999, z: 50}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 50, y: 1, z: 30}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -256,10 +256,10 @@ GameObject:
   - 33: {fileID: 971747426}
   - 135: {fileID: 971747425}
   - 54: {fileID: 971747423}
-  - 114: {fileID: 971747422}
   - 23: {fileID: 971747424}
+  - 114: {fileID: 971747422}
   m_Layer: 9
-  m_Name: PhysicalBall
+  m_Name: PlayerBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,11 +273,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 971747421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e39a0fc214e1348a8e66748873d0fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 435d9498659cf7d4f8f379dec6faa600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_MoveSpeed: 20
-  m_JumpSpeed: 500
+  m_JumpSpeed: 350
 --- !u!54 &971747423
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -343,7 +343,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 971747421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -402,7 +402,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1092294948}
-  m_LocalRotation: {x: .408217937, y: -.234569728, z: .109381676, w: .875426054}
+  m_LocalRotation: {x: .365998179, y: .453153938, z: -.21130918, w: .784885526}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
