@@ -62,7 +62,7 @@ public partial class PlayerController : MonoBehaviour
 
     public void OnCollisionEnter(Collision i_TheCollision)
     {
-        if (i_TheCollision.gameObject.name == "Cube")
+        if (i_TheCollision.gameObject.tag == "PlainTag")
         {
             m_Grounded = true;
         }
@@ -70,7 +70,7 @@ public partial class PlayerController : MonoBehaviour
 
     public void OnCollisionExit(Collision i_TheCollision)
     {
-        if (i_TheCollision.gameObject.name == "Cube")
+        if (i_TheCollision.gameObject.tag == "PlainTag")
         {
             m_Grounded = false;
         }
