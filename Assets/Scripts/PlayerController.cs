@@ -90,13 +90,15 @@ public partial class PlayerController : NetworkBehaviour
         }
 
         // IN TESTING!
-        if (i_TheCollision.gameObject.CompareTag("Player"))
-        {
-            var otherPlayer = i_TheCollision.collider.gameObject;
-            var pushVector = i_TheCollision.gameObject.transform.position - m_RigidBody.transform.position * m_RigidBody.velocity.sqrMagnitude * 100;
+        //if (i_TheCollision.gameObject.CompareTag("Player"))
+        //{
+        //    var otherPlayer = i_TheCollision.collider.gameObject;
+        //    var pushVector = i_TheCollision.gameObject.transform.position - m_RigidBody.transform.position * 3;// *m_RigidBody.velocity.sqrMagnitude;
 
-            CmdPushPlayer(otherPlayer, pushVector);
-        }
+        //    Debug.DrawLine(Vector3.zero, pushVector,Color.black);
+
+        //    CmdPushPlayer(otherPlayer, pushVector);
+        //}
     }
 
     [Command]
