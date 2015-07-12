@@ -27,17 +27,21 @@ public partial class PlayerController : NetworkBehaviour
     // FixedUpdate is called before any physics calculation, this is where the physics code should go(as seen on the Unity tutorial)
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+            return;
+
         //Query for the current state of relevent movement axes: (returns values from -1 to +1)
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        movementManagmnt(moveHorizontal, moveVertical);
+        CmdMovementManagmnt(moveHorizontal, moveVertical);
     }
 
-    private void movementManagmnt(float i_Horizontal, float i_Vertical)
+    [Command]
+    private void CmdMovementManagmnt(float i_Horizontal, float i_Vertical)
     {
         Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
-        m_RigidBody.AddForce(movement * m_MoveSpeed);
+        m_RigidBody.AddForce(movement * m_MoveSpeed * m_RigidBody.mass);
 
         //if (Input.GetKey(KeyCode.LeftArrow))
         //{
@@ -67,6 +71,21 @@ public partial class PlayerController : NetworkBehaviour
         {
             m_Grounded = true;
         }
+
+        // IN TESTING!
+        if (i_TheCollision.gameObject.CompareTag("Player"))
+        {
+            var otherPlayer = i_TheCollision.collider.gameObject;
+            var pushVector = i_TheCollision.gameObject.transform.position - m_RigidBody.transform.position * m_RigidBody.velocity.sqrMagnitude * 100;
+
+            CmdPushPlayer(otherPlayer, pushVector);
+        }
+    }
+
+    [Command]
+    public void CmdPushPlayer(GameObject player, Vector3 force)
+    {
+        player.GetComponent<Rigidbody>().AddForce(force);
     }
 
     public void OnCollisionExit(Collision i_TheCollision)

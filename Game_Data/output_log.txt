@@ -16,16 +16,11 @@ Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.N
 Loading D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.040 seconds
+- Completed reload, in  0.042 seconds
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\System.dll (this message is harmless)
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 2520 -> priority: 1 
-  Thread -> id: 284c -> priority: 1 
 Initialize engine version: 5.1.1f1 (2046fc06d4d8)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -44,13 +39,42 @@ Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.N
 Loading D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Workspace\Unity\BallRoyale\Game_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.043 seconds
+- Completed reload, in  0.049 seconds
+Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 28fc -> priority: 1 
+  Thread -> id: 250 -> priority: 1 
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
 Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Workspace\Unity\BallRoyale\Game_Data\Managed\System.dll (this message is harmless)
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: f3c -> priority: 1 
-  Thread -> id: b34 -> priority: 1 
+  Thread -> id: 28b4 -> priority: 1 
+  Thread -> id: 2db4 -> priority: 1 
+Trying to send command for non-local player.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+Trying to send command for non-local player.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+Trying to send command for non-local player.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+Trying to send command for non-local player.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+Trying to send command for non-local player.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+Trying to send command for non-local player.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
