@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : NetworkBehaviour
 {
     private bool m_Grounded = true;
     private Rigidbody m_RigidBody;
