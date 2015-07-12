@@ -30,11 +30,14 @@ public partial class PlayerController : NetworkBehaviour
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") & Vector3.zero != m_RigidBody.velocity)
+        Vector3 velocityDir = m_RigidBody.velocity;
+
+        if (Input.GetButtonDown("Fire1") & Vector3.zero != velocityDir)
         {
+
             Rigidbody clone;
-            clone = Instantiate(m_ProjectileRigidBody, transform.position, transform.rotation) as Rigidbody;
-            clone.velocity = m_RigidBody.velocity.normalized * m_ProjectileSpeed;
+            clone = Instantiate(m_ProjectileRigidBody, transform.position + velocityDir.normalized, transform.rotation) as Rigidbody;
+            clone.velocity = velocityDir.normalized * m_ProjectileSpeed;
         }
     }
 
