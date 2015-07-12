@@ -17,7 +17,7 @@ GameObject:
   - 114: {fileID: 11428118}
   m_Layer: 8
   m_Name: PlayerBall
-  m_TagString: MainPlayer
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,8 +28,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128554}
-  m_LocalRotation: {x: 0, y: .336817026, z: 0, w: .941570163}
-  m_LocalPosition: {x: 0, y: 1.66999996, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,7 +44,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 085f6e8fa8d63ca4e90e62dcd2dd1f5f, type: 2}
+  - {fileID: 2100000, guid: a480961b3fb4e814aacb1bfe2b25a621, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -91,8 +91,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435d9498659cf7d4f8f379dec6faa600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ProjectileRigidBody: {fileID: 5474306, guid: 5baa89a702c70114999b4f17d8a241f6,
+    type: 2}
   m_MoveSpeed: 20
   m_JumpSpeed: 350
+  m_ProjectileSpeed: 30
 --- !u!114 &11428118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,7 +166,31 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ProjectileRigidBody
+      value: 
+      objectReference: {fileID: 5474306, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a480961b3fb4e814aacb1bfe2b25a621, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 128554}

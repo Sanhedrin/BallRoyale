@@ -4,13 +4,22 @@ using System.Collections;
 
 public partial class PlayerController : NetworkBehaviour
 {
-    private bool m_Grounded = true;
+    private bool m_Grounded = false;
+    
     private Rigidbody m_RigidBody;
+
+    // Instantiate a prefab with an attached Missile script
+    [SerializeField]
+    public Rigidbody m_ProjectileRigidBody;
 
     [SerializeField]
     private float m_MoveSpeed = 20;
+    
     [SerializeField]
     private float m_JumpSpeed = 350;
+    
+    [SerializeField]
+    private float m_ProjectileSpeed = 30;
 
 	// Use this for initialization
 	void Start ()
@@ -21,7 +30,12 @@ public partial class PlayerController : NetworkBehaviour
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
-
+        if (Input.GetButtonDown("Fire1") & Vector3.zero != m_RigidBody.velocity)
+        {
+            Rigidbody clone;
+            clone = Instantiate(m_ProjectileRigidBody, transform.position, transform.rotation) as Rigidbody;
+            clone.velocity = m_RigidBody.velocity.normalized * m_ProjectileSpeed;
+        }
     }
 
     // FixedUpdate is called before any physics calculation, this is where the physics code should go(as seen on the Unity tutorial)
@@ -42,7 +56,11 @@ public partial class PlayerController : NetworkBehaviour
     {
         Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
         m_RigidBody.AddForce(movement * m_MoveSpeed * m_RigidBody.mass);
-
+       
+        if (Input.GetButtonDown("Jump") && m_Grounded)
+        {
+            m_RigidBody.AddForce(Vector3.up * m_JumpSpeed);
+        }
         //if (Input.GetKey(KeyCode.LeftArrow))
         //{
         //    m_RigidBody.AddForce(Vector3.left * m_MoveSpeed);
@@ -59,10 +77,6 @@ public partial class PlayerController : NetworkBehaviour
         //{
         //    m_RigidBody.AddForce(Vector3.back * m_MoveSpeed);
         //}
-        if (Input.GetKeyDown(KeyCode.Space) && m_Grounded)
-        {
-            m_RigidBody.AddForce(Vector3.up * m_JumpSpeed);
-        }
     }
 
     public void OnCollisionEnter(Collision i_TheCollision)
