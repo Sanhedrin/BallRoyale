@@ -89,7 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 232e64b01eb54014c9106ae317b10430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ExplosionForce: 1000
+  m_LifeTime: 5
+  m_ExplosionForce: 3000
   m_ExplosionRadius: 1000
 --- !u!135 &13501424
 SphereCollider:
@@ -132,7 +133,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_ExplosionForce
-      value: 1000
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_ExplosionRadius
