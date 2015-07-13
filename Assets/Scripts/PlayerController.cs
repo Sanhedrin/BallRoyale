@@ -15,7 +15,7 @@ public partial class PlayerController : NetworkBehaviour
     /// <summary>
     /// How the knockback should be calculated from the health. The lower this is, the higher the knockback scaling becomes.
     /// </summary>
-    private const int k_HealthKnockbackStep = 100;
+    private const int k_HealthKnockbackStep = 750;
 
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
