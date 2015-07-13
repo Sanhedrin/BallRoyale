@@ -14,7 +14,7 @@ public partial class PlayerController : NetworkBehaviour
     /// <summary>
     /// How the knockback should be calculated from the health. The lower this is, the higher the knockback scaling becomes.
     /// </summary>
-    private const int k_HealthKnockbackStep = 100;
+    private const int k_HealthKnockbackStep = 750;
 
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
@@ -43,11 +43,11 @@ public partial class PlayerController : NetworkBehaviour
     {
         Vector3 velocityDir = m_Rigidbody.velocity;
         
-        if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
-        {
-            GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, transform.rotation) as GameObject;
-            clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
-        }
+        //if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
+        //{
+        //    GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, transform.rotation) as GameObject;
+        //    clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
+        //}
     }
 
     // FixedUpdate is called before any physics calculation, this is where the physics code should go(as seen on the Unity tutorial)
@@ -87,14 +87,13 @@ public partial class PlayerController : NetworkBehaviour
     /// This is a coroutine and is only called on the server.
     /// </summary>
     /// <param name="i_PushedPlayer">Player to push</param>
-    private IEnumerator serverPushPlayer(GameObject i_PushedPlayer)
+    private IEnumerator serverPushPlayer(PlayerController i_PushedPlayer)
     {
         if (isServer)
         {
             yield return null;
             yield return null;
-            PlayerController pushedPlayer = i_PushedPlayer.GetComponent<PlayerController>();
-            pushedPlayer.m_Rigidbody.velocity *= (1 + (float)pushedPlayer.m_Health / (float)PlayerController.k_HealthKnockbackStep);
+            i_PushedPlayer.m_Rigidbody.velocity *= (1 + (float)i_PushedPlayer.m_Health / (float)PlayerController.k_HealthKnockbackStep);
         }
     }
 
@@ -109,7 +108,9 @@ public partial class PlayerController : NetworkBehaviour
         {
             if (isServer)
             {
-                StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
+                PlayerController hitPlayer = i_CollisionInfo.collider.gameObject.GetComponent<PlayerController>();
+
+                StartCoroutine(serverPushPlayer(hitPlayer));
             }
         }
     }
