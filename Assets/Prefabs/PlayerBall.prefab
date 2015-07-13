@@ -91,8 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435d9498659cf7d4f8f379dec6faa600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ProjectileRigidBody: {fileID: 5474306, guid: 5baa89a702c70114999b4f17d8a241f6,
-    type: 2}
+  m_Health: 0
+  m_Rigidbody: {fileID: 0}
+  m_ProjectilePrefab: {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
   m_MoveSpeed: 20
   m_JumpSpeed: 350
   m_ProjectileSpeed: 30
@@ -196,6 +197,10 @@ Prefab:
       value: 
       objectReference: {fileID: 13400000, guid: 163263fc31afb0f4eb18705e41c83ebb,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_ProjectilePrefab
+      value: 
+      objectReference: {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 128554}
