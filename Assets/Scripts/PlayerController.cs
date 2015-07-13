@@ -32,6 +32,9 @@ public partial class PlayerController : NetworkBehaviour
     [SerializeField]
     private float m_ProjectileSpeed = 30;
 
+    [SerializeField]
+    private GameObject m_SpawnPoint;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -45,7 +48,8 @@ public partial class PlayerController : NetworkBehaviour
         
         if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
         {
-            GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, transform.rotation) as GameObject;
+            GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, Quaternion.LookRotation(velocityDir.normalized)) as GameObject;
+            clone.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
             clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
         }
     }
@@ -103,6 +107,11 @@ public partial class PlayerController : NetworkBehaviour
         if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             m_Grounded = true;
+        }
+
+        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("KillBox"))
+        {
+            //transform.position = m_SpawnPoint.transform.position;
         }
 
         if (i_CollisionInfo.gameObject.CompareTag("Player"))

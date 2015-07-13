@@ -93,10 +93,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Health: 0
   m_Rigidbody: {fileID: 0}
-  m_ProjectilePrefab: {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
+  m_ProjectilePrefab: {fileID: 181544, guid: a681cb0466acced4fb8bf536a2c18d35, type: 2}
   m_MoveSpeed: 20
   m_JumpSpeed: 350
   m_ProjectileSpeed: 30
+  m_SpawnPoint: {fileID: 199036, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
 --- !u!114 &11428118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,7 +201,11 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_ProjectilePrefab
       value: 
-      objectReference: {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
+      objectReference: {fileID: 181544, guid: a681cb0466acced4fb8bf536a2c18d35, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_SpawnPoint
+      value: 
+      objectReference: {fileID: 199036, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 128554}
