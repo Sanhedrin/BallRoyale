@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using System.Collections;
 
 public partial class PlayerController : NetworkBehaviour
@@ -32,15 +33,24 @@ public partial class PlayerController : NetworkBehaviour
     [SerializeField]
     private float m_ProjectileSpeed = 30;
 
+    private Text PlayerHealthText;
+
 	// Use this for initialization
 	void Start ()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+
+        var text = GameObject.Find(string.Format("Player{0}HP", netId));
+        text.SetActive(true);
+        PlayerHealthText = text.GetComponent<Text>();
 	}
 	
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
+        if (!isLocalPlayer)
+            return;
+
         Vector3 velocityDir = m_Rigidbody.velocity;
         
         if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
@@ -48,6 +58,8 @@ public partial class PlayerController : NetworkBehaviour
             GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, transform.rotation) as GameObject;
             clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
         }
+
+        PlayerHealthText.text = m_Health.ToString();
     }
 
     // FixedUpdate is called before any physics calculation, this is where the physics code should go(as seen on the Unity tutorial)
@@ -100,6 +112,8 @@ public partial class PlayerController : NetworkBehaviour
 
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
+        m_Health++;
+
         if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             m_Grounded = true;
