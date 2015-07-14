@@ -6,17 +6,28 @@ public class Projectile : MonoBehaviour
     private Rigidbody m_OtherRigidBody;
 
     [SerializeField]
-    float m_LifeTime = 5;
+    private float m_LifeTime = 3f;
 
     [SerializeField]
-    float m_ExplosionForce = 1000f;
+    private float m_ExplosionForce = 1000f;
 
     [SerializeField]
-    float m_ExplosionRadius = 1000f;
+    private float m_ExplosionRadius = 1000f;
 
-    void Start()
+    void OnEnable()
     {
-        Destroy(gameObject, m_LifeTime);
+        StartCoroutine(DestroyProjectile(m_LifeTime));
+    }
+
+    IEnumerator DestroyProjectile(float i_StartIn)
+    {
+        yield return new WaitForSeconds(i_StartIn);
+        gameObject.SetActive(false);
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     void OnTriggerEnter(Collider i_Other)
@@ -25,8 +36,9 @@ public class Projectile : MonoBehaviour
         {
             m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
 
+            //TODO: improve the explosion effect/behaviour
             m_OtherRigidBody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }
