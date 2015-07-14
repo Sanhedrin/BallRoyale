@@ -8,8 +8,16 @@ public partial class PlayerController : NetworkBehaviour
     [SyncVar]
     private bool m_Grounded = false;
 
-    [SyncVar]
-    public int m_Health = 0;
+    /// <summary>
+    /// Never set to this directly, use setPlayerHealth() instead.
+    /// </summary>
+    [SyncVar(hook="OnHealthChanged")]
+    private int m_Health = 0;
+    private void OnHealthChanged(int i_NewHealth)
+    {
+        m_Health = i_NewHealth < k_MaxHealth ? i_NewHealth : k_MaxHealth;
+    }
+
     private const int k_MaxHealth = 999;
 
     /// <summary>
@@ -41,7 +49,7 @@ public partial class PlayerController : NetworkBehaviour
     {
         m_Rigidbody = GetComponent<Rigidbody>();
 
-        var text = GameObject.Find(string.Format("Player{0}HP", netId));
+        GameObject text = GameObject.Find(string.Format("Player{0}HP", netId));
         text.SetActive(true);
         PlayerHealthText = text.GetComponent<Text>();
 
@@ -72,12 +80,17 @@ public partial class PlayerController : NetworkBehaviour
         if (isLocalPlayer)
         {
             //Query for the current state of relevent movement axes: (returns values from -1 to +1)
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-            bool jump = Input.GetButtonDown("Jump") && m_Grounded;
+            float moveHorizontal = Input.GetAxis(ConstNames.HorizontalAxis);
+            float moveVertical = Input.GetAxis(ConstNames.VerticalAxis);
+            bool jump = Input.GetButtonDown(ConstNames.JumpButton) && m_Grounded;
 
             CmdMovementManagement(moveHorizontal, moveVertical, jump);
         }
+    }
+
+    private void setPlayerHealth(int i_NewHealth)
+    {
+        m_Health = i_NewHealth;
     }
 
     /// <summary>
@@ -116,21 +129,25 @@ public partial class PlayerController : NetworkBehaviour
 
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
-        m_Health++;
-
-        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        if (isServer)
         {
-            m_Grounded = true;
-        }
+            m_Health++;
 
-        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("KillBox"))
-        {
-            handleDeath();
-        }
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("KillBox"))
+            {
+                handleDeath();
+            }
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+            {
+                m_Grounded = true;
+            }
 
-        if (i_CollisionInfo.gameObject.CompareTag("Player"))
-        {
-            if (isServer)
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.KillBoxLayer))
+            {
+                //transform.position = m_SpawnPoint.transform.position;
+            }
+
+            if (i_CollisionInfo.gameObject.CompareTag(ConstNames.PlayerTag))
             {
                 StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
             }
@@ -153,9 +170,12 @@ public partial class PlayerController : NetworkBehaviour
 
     void OnCollisionExit(Collision i_CollisionInfo)
     {
-        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        if (isServer)
         {
-            m_Grounded = false;
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+            {
+                m_Grounded = false;
+            }
         }
     }
 }
