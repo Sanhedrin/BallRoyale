@@ -22,7 +22,8 @@ public partial class PlayerController : NetworkBehaviour
     public Rigidbody m_Rigidbody;
 
     // Instantiate a prefab with an attached Missile script
-    public GameObject m_ProjectilePrefab;
+    [SerializeField]
+    private GameObject m_ProjectilePrefab;
 
     [SerializeField]
     private float m_MoveSpeed = 20;
@@ -32,9 +33,6 @@ public partial class PlayerController : NetworkBehaviour
     
     [SerializeField]
     private float m_ProjectileSpeed = 30;
-
-    [SerializeField]
-    private GameObject m_SpawnPoint;
 
     private Text PlayerHealthText;
 
@@ -51,16 +49,16 @@ public partial class PlayerController : NetworkBehaviour
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
-        if (!isLocalPlayer)
-            return;
-
-        Vector3 velocityDir = m_Rigidbody.velocity;
-        
-        if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
+        if (isLocalPlayer)
         {
-            GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, Quaternion.LookRotation(velocityDir.normalized)) as GameObject;
-            clone.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
-            clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
+            Vector3 velocityDir = m_Rigidbody.velocity;
+
+            if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
+            {
+                GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, Quaternion.LookRotation(velocityDir.normalized)) as GameObject;
+                clone.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
+                clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
+            }
         }
 
         PlayerHealthText.text = m_Health.ToString();
