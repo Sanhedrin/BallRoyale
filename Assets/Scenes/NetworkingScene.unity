@@ -391,7 +391,8 @@ Prefab:
       propertyPath: m_Name
       value: SpawnPoint2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &434394757
@@ -574,7 +575,8 @@ Prefab:
       propertyPath: m_Name
       value: SpawnPoint3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &622056552
@@ -1127,7 +1129,8 @@ Prefab:
       propertyPath: m_Name
       value: SpawnPoint4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1405453078
@@ -1173,7 +1176,8 @@ Prefab:
       propertyPath: m_Name
       value: SpawnPoint1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1405648971

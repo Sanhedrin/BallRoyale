@@ -127,6 +127,21 @@ public partial class PlayerController : NetworkBehaviour
         }
     }
 
+
+    private void handleDeath()
+    {
+        Transform spawnPoint = NetworkManager.singleton.startPositions[Random.Range(0, NetworkManager.singleton.startPositions.Count)];
+        transform.position = spawnPoint.position;
+
+        m_Health = 0;
+        initializePhysicsInfo();
+    }
+
+    private void initializePhysicsInfo()
+    {
+        m_Rigidbody.velocity = Vector3.zero;
+    }
+
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
         if (isServer)
@@ -148,20 +163,6 @@ public partial class PlayerController : NetworkBehaviour
                 StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
             }
         }
-    }
-
-    private void handleDeath()
-    {
-        Transform spawnPoint = NetworkManager.singleton.startPositions[Random.Range(0, NetworkManager.singleton.startPositions.Count)];
-        transform.position = spawnPoint.position;
-
-        m_Health = 0;
-        initializePhysicsInfo();
-    }
-
-    private void initializePhysicsInfo()
-    {
-        m_Rigidbody.velocity = Vector3.zero;
     }
 
     void OnCollisionExit(Collision i_CollisionInfo)
