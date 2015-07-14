@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public partial class PlayerController : NetworkBehaviour
 {
@@ -46,6 +47,9 @@ public partial class PlayerController : NetworkBehaviour
 
     private static int m_ConnectedPlayers = 0;
 
+    const int k_ProjectilePooledAmount = 10;
+    List<GameObject> m_ProjectilePool;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -56,21 +60,47 @@ public partial class PlayerController : NetworkBehaviour
             CmdRequestID();
         }
 
-        Random.seed = System.DateTime.Now.Millisecond; 
-	}    
+        Random.seed = System.DateTime.Now.Millisecond;
+ 
+        //Creating the pool of projectiles
+        m_ProjectilePool = new List<GameObject>();
+        for (int i = 0; i < k_ProjectilePooledAmount; i++)
+        {
+            GameObject obj = Instantiate(m_ProjectilePrefab);
+            obj.SetActive(false);
+            m_ProjectilePool.Add(obj);
+            break;
+        }
+	}
 	
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
         if (isLocalPlayer)
         {
-            Vector3 velocityDir = m_Rigidbody.velocity;
+            Shoot();
+        }
 
-            if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
+        PlayerHealthText.text = m_Health.ToString();
+    }
+
+    void Shoot()
+    {
+        Vector3 velocityDir = m_Rigidbody.velocity.normalized;
+
+        if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
+        {
+            for (int i = 0; i < k_ProjectilePooledAmount; i++)
             {
-                GameObject clone = Instantiate(m_ProjectilePrefab, transform.position + velocityDir.normalized, Quaternion.LookRotation(velocityDir.normalized)) as GameObject;
-                clone.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
-                clone.GetComponent<Rigidbody>().velocity = velocityDir.normalized * m_ProjectileSpeed;
+                GameObject currObj = m_ProjectilePool[i];
+
+                if (currObj.activeInHierarchy)
+                {
+                    currObj.transform.position = transform.position + velocityDir;
+                    currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
+                    currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
+                    currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
+                }
             }
         }
 
