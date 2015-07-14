@@ -133,18 +133,14 @@ public partial class PlayerController : NetworkBehaviour
         {
             m_Health++;
 
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("KillBox"))
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.KillBoxLayer))
             {
                 handleDeath();
             }
+
             if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
             {
                 m_Grounded = true;
-            }
-
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.KillBoxLayer))
-            {
-                //transform.position = m_SpawnPoint.transform.position;
             }
 
             if (i_CollisionInfo.gameObject.CompareTag(ConstNames.PlayerTag))
