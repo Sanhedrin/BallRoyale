@@ -44,6 +44,8 @@ public partial class PlayerController : NetworkBehaviour
         var text = GameObject.Find(string.Format("Player{0}HP", netId));
         text.SetActive(true);
         PlayerHealthText = text.GetComponent<Text>();
+
+        Random.seed = System.DateTime.Now.Millisecond; 
 	}
 	
 	// Update is called once per frame, non-physics updates should be writen here.
@@ -123,7 +125,7 @@ public partial class PlayerController : NetworkBehaviour
 
         if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer("KillBox"))
         {
-            //transform.position = m_SpawnPoint.transform.position;
+            handleDeath();
         }
 
         if (i_CollisionInfo.gameObject.CompareTag("Player"))
@@ -133,6 +135,20 @@ public partial class PlayerController : NetworkBehaviour
                 StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
             }
         }
+    }
+
+    private void handleDeath()
+    {
+        Transform spawnPoint = NetworkManager.singleton.startPositions[Random.Range(0, NetworkManager.singleton.startPositions.Count)];
+        transform.position = spawnPoint.position;
+
+        m_Health = 0;
+        initializePhysicsInfo();
+    }
+
+    private void initializePhysicsInfo()
+    {
+        m_Rigidbody.velocity = Vector3.zero;
     }
 
     void OnCollisionExit(Collision i_CollisionInfo)
