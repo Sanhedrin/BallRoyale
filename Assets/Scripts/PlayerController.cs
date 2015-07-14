@@ -44,17 +44,20 @@ public partial class PlayerController : NetworkBehaviour
 
     private Text PlayerHealthText;
 
+    private static int m_ConnectedPlayers = 0;
+
 	// Use this for initialization
 	void Start ()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
 
-        GameObject text = GameObject.Find(string.Format("Player{0}HP", netId));
-        text.SetActive(true);
-        PlayerHealthText = text.GetComponent<Text>();
+        if (isLocalPlayer)
+        {
+            CmdRequestID();
+        }
 
         Random.seed = System.DateTime.Now.Millisecond; 
-	}
+	}    
 	
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
@@ -71,7 +74,10 @@ public partial class PlayerController : NetworkBehaviour
             }
         }
 
-        PlayerHealthText.text = m_Health.ToString();
+        if (PlayerHealthText)
+        {
+            PlayerHealthText.text = m_Health.ToString();
+        }
     }
 
     // FixedUpdate is called before any physics calculation, this is where the physics code should go(as seen on the Unity tutorial)
@@ -88,9 +94,21 @@ public partial class PlayerController : NetworkBehaviour
         }
     }
 
-    private void setPlayerHealth(int i_NewHealth)
+    /// <summary>
+    /// Requests the server to assign client an ID
+    /// </summary>
+    [Command]
+    private void CmdRequestID()
     {
-        m_Health = i_NewHealth;
+        RpcIDAssignResponse(++m_ConnectedPlayers);
+    }
+
+    [ClientRpc]
+    private void RpcIDAssignResponse(int i_IDAssignment)
+    {
+        GameObject text = GameObject.Find(string.Format("Player{0}HP", i_IDAssignment));
+        text.SetActive(true);
+        PlayerHealthText = text.GetComponent<Text>();
     }
 
     /// <summary>
