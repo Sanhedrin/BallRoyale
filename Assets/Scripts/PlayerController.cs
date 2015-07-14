@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
+using Assets.Scripts;
 
 public partial class PlayerController : NetworkBehaviour
 {
@@ -43,9 +46,13 @@ public partial class PlayerController : NetworkBehaviour
     [SerializeField]
     private float m_ProjectileSpeed = 30;
 
-    private Text PlayerHealthText;
+    private Text m_PlayerHealthText;
 
-    private static int m_ConnectedPlayers = 0;
+    [SyncVar]
+    private int m_ConnectionID;
+
+    private delegate void IDAssignedEventHandler(object sender, IDEventArgs e);
+    private event IDAssignedEventHandler IDAssigned;
 
     const int k_ProjectilePooledAmount = 10;
     List<GameObject> m_ProjectilePool;
@@ -55,9 +62,15 @@ public partial class PlayerController : NetworkBehaviour
     {
         m_Rigidbody = GetComponent<Rigidbody>();
 
+        IDAssigned += new IDAssignedEventHandler(PlayerController_IDAssigned);
+
         if (isLocalPlayer)
         {
             CmdRequestID();
+        }
+        else
+        {
+            AssignTextForPlayer(m_ConnectionID);
         }
 
         Random.seed = System.DateTime.Now.Millisecond;
@@ -81,32 +94,9 @@ public partial class PlayerController : NetworkBehaviour
             Shoot();
         }
 
-        PlayerHealthText.text = m_Health.ToString();
-    }
-
-    void Shoot()
-    {
-        Vector3 velocityDir = m_Rigidbody.velocity.normalized;
-
-        if (Input.GetButtonDown("Fire1") && Vector3.zero != velocityDir)
+        if (m_PlayerHealthText)
         {
-            for (int i = 0; i < k_ProjectilePooledAmount; i++)
-            {
-                GameObject currObj = m_ProjectilePool[i];
-
-                if (currObj.activeInHierarchy)
-                {
-                    currObj.transform.position = transform.position + velocityDir;
-                    currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
-                    currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
-                    currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
-                }
-            }
-        }
-
-        if (PlayerHealthText)
-        {
-            PlayerHealthText.text = m_Health.ToString();
+            m_PlayerHealthText.text = m_Health.ToString();
         }
     }
 
@@ -130,15 +120,42 @@ public partial class PlayerController : NetworkBehaviour
     [Command]
     private void CmdRequestID()
     {
-        RpcIDAssignResponse(++m_ConnectedPlayers);
+        m_ConnectionID = NetworkManager.singleton.numPlayers;
+        RpcIDAssignResponse(m_ConnectionID);
     }
 
+    /// <summary>
+    /// A response to the ID assignment request.
+    /// </summary>
+    /// <param name="i_IDAssignment">The ID this player was assigned</param>
     [ClientRpc]
     private void RpcIDAssignResponse(int i_IDAssignment)
     {
-        GameObject text = GameObject.Find(string.Format("Player{0}HP", i_IDAssignment));
+        OnIDAssigned(new IDEventArgs(i_IDAssignment));
+    }
+
+    //
+    private void OnIDAssigned(IDEventArgs e)
+    {
+        if (IDAssigned != null)
+        {
+            IDAssigned.Invoke(this, e);
+        } 
+    }
+
+    private void PlayerController_IDAssigned(object sender, IDEventArgs e)
+    {
+        AssignTextForPlayer(e.ID);
+    }
+
+    /// <summary>
+    /// Assigns the text object holding the health of a player to the corresponding player ID.
+    /// </summary>
+    private void AssignTextForPlayer(int i_PlayerID)
+    {
+        GameObject text = GameObject.Find(string.Format("Player{0}HP", i_PlayerID));
         text.SetActive(true);
-        PlayerHealthText = text.GetComponent<Text>();
+        m_PlayerHealthText = text.GetComponent<Text>();
     }
 
     /// <summary>
@@ -156,6 +173,33 @@ public partial class PlayerController : NetworkBehaviour
         if (i_Jump)
         {
             m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
+        }
+    }
+
+
+    void Shoot()
+    {
+        Vector3 velocityDir = m_Rigidbody.velocity.normalized;
+
+        if (Input.GetButtonDown(ConstNames.FireButton) && Vector3.zero != velocityDir)
+        {
+            for (int i = 0; i < k_ProjectilePooledAmount; i++)
+            {
+                GameObject currObj = m_ProjectilePool[i];
+
+                if (currObj.activeInHierarchy)
+                {
+                    currObj.transform.position = transform.position + velocityDir;
+                    currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
+                    currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
+                    currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
+                }
+            }
+        }
+
+        if (m_PlayerHealthText)
+        {
+            m_PlayerHealthText.text = m_Health.ToString();
         }
     }
     
