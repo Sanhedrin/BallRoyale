@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 11439526}
   - 114: {fileID: 11415686}
   - 114: {fileID: 11428118}
+  - 114: {fileID: 11445056}
   m_Layer: 0
   m_Name: PlayerBall
   m_TagString: Player
@@ -91,13 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435d9498659cf7d4f8f379dec6faa600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Health: 0
   m_Rigidbody: {fileID: 0}
-  m_ProjectilePrefab: {fileID: 181544, guid: a681cb0466acced4fb8bf536a2c18d35, type: 2}
-  m_MoveSpeed: 20
-  m_JumpSpeed: 350
-  m_ProjectileSpeed: 30
-  m_SpawnPoint: {fileID: 199036, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
 --- !u!114 &11428118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -150,6 +145,22 @@ MonoBehaviour:
     i15: 12
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &11445056
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ed891c3e523d9f4fbe86035cc602748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Rigidbody: {fileID: 0}
+  m_ProjectilePrefab: {fileID: 181544, guid: a681cb0466acced4fb8bf536a2c18d35, type: 2}
+  m_MoveSpeed: 20
+  m_JumpSpeed: 350
+  m_ProjectileSpeed: 30
 --- !u!135 &13541108
 SphereCollider:
   m_ObjectHideFlags: 1
