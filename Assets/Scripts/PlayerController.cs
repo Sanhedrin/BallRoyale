@@ -82,14 +82,13 @@ public partial class PlayerController : NetworkBehaviour
             GameObject obj = Instantiate(m_ProjectilePrefab);
             obj.SetActive(false);
             m_ProjectilePool.Add(obj);
-            break;
         }
 	}
 	
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer && Input.GetButtonDown(ConstNames.FireButton))
         {
             Shoot();
         }
@@ -176,23 +175,24 @@ public partial class PlayerController : NetworkBehaviour
         }
     }
 
-
     void Shoot()
     {
         Vector3 velocityDir = m_Rigidbody.velocity.normalized;
 
-        if (Input.GetButtonDown(ConstNames.FireButton) && Vector3.zero != velocityDir)
+        if (Vector3.zero != velocityDir)
         {
             for (int i = 0; i < k_ProjectilePooledAmount; i++)
             {
                 GameObject currObj = m_ProjectilePool[i];
 
-                if (currObj.activeInHierarchy)
+                if (!currObj.activeInHierarchy)
                 {
                     currObj.transform.position = transform.position + velocityDir;
                     currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
                     currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
                     currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
+                    currObj.SetActive(true);
+                    break;
                 }
             }
         }
@@ -218,7 +218,6 @@ public partial class PlayerController : NetworkBehaviour
             pushedPlayer.m_Rigidbody.velocity *= (1 + (float)pushedPlayer.m_Health / (float)PlayerController.k_HealthKnockbackStep);
         }
     }
-
 
     private void handleDeath()
     {

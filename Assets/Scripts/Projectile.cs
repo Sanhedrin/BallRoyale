@@ -5,8 +5,7 @@ public class Projectile : MonoBehaviour
 {
     private Rigidbody m_OtherRigidBody;
 
-    [SerializeField]
-    private float m_LifeTime = 3f;
+    private float m_LifeTime = 2f;
 
     [SerializeField]
     private float m_ExplosionForce = 1000f;
