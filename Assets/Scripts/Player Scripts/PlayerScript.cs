@@ -156,6 +156,9 @@ public class PlayerScript : NetworkBehaviour
         m_Rigidbody.velocity = Vector3.zero;
     }
 
+    //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
+    //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
+    [Server]
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
         if (isServer)

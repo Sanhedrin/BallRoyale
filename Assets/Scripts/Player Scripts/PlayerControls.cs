@@ -122,6 +122,7 @@ public partial class PlayerControls : NetworkBehaviour
 
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
     //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
+    [Server]
     void OnCollisionExit(Collision i_CollisionInfo)
     {
         if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
