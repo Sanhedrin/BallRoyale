@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 /// <summary>
 /// Manages player input and their effect.
 /// </summary>
-public partial class PlayerControls : NetworkBehaviour 
+public class PlayerControls : NetworkBehaviour 
 {
     [SyncVar]
     private bool m_Grounded = false;
@@ -111,23 +111,27 @@ public partial class PlayerControls : NetworkBehaviour
 
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
     //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
-    [Server]
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
-        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+        if (isServer)
         {
-            m_Grounded = true;
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+            {
+                m_Grounded = true;
+            }
         }
     }
 
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
     //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
-    [Server]
     void OnCollisionExit(Collision i_CollisionInfo)
     {
-        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+        if (isServer)
         {
-            m_Grounded = false;
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+            {
+                m_Grounded = false;
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Assets.Scripts;
+using Assets.Scripts.Player_Scripts;
 
 /// <summary>
 /// The base script for the player will manage the display and stats of the player, as well as network synchronization.
@@ -36,7 +37,7 @@ public class PlayerScript : NetworkBehaviour
     private Text m_PlayerHealthText;
 
     [SyncVar]
-    private int m_ConnectionID;
+    private int m_ConnectionID = -1;
 
     private delegate void IDAssignedEventHandler(object sender, IDEventArgs e);
     private event IDAssignedEventHandler IDAssigned;
@@ -52,10 +53,11 @@ public class PlayerScript : NetworkBehaviour
         {
             CmdRequestID();
         }
-        else
+        else if(m_ConnectionID > 0)
         {
-            AssignTextForPlayer(m_ConnectionID);
+            OnIDAssigned(new IDEventArgs(m_ConnectionID));
         }
+
 
         Random.seed = System.DateTime.Now.Millisecond;
 	}
@@ -69,24 +71,16 @@ public class PlayerScript : NetworkBehaviour
         }
     }
 
-    /// <summary>
-    /// Requests the server to assign client an ID
-    /// </summary>
     [Command]
-    private void CmdRequestID()
+    public void CmdRequestID()
     {
-        m_ConnectionID = NetworkManager.singleton.numPlayers;
-        RpcIDAssignResponse(m_ConnectionID);
+        ((BallGameNetworkManager)BallGameNetworkManager.singleton).CmdRequestID((int)netId.Value, this);
     }
 
-    /// <summary>
-    /// A response to the ID assignment request.
-    /// </summary>
-    /// <param name="i_IDAssignment">The ID this player was assigned</param>
     [ClientRpc]
-    private void RpcIDAssignResponse(int i_IDAssignment)
+    public void RpcIDAssignmentResponse(int i_ID)
     {
-        OnIDAssigned(new IDEventArgs(i_IDAssignment));
+        OnIDAssigned(new IDEventArgs(i_ID));
     }
 
     /// <summary>
@@ -98,12 +92,13 @@ public class PlayerScript : NetworkBehaviour
         if (IDAssigned != null)
         {
             IDAssigned.Invoke(this, e);
-        } 
+        }
     }
-
+        
     //Activates all methods based on ID assignment
     private void PlayerController_IDAssigned(object sender, IDEventArgs e)
     {
+        m_ConnectionID = e.ID;
         AssignTextForPlayer(e.ID);
     }
 
@@ -156,9 +151,14 @@ public class PlayerScript : NetworkBehaviour
         m_Rigidbody.velocity = Vector3.zero;
     }
 
+    void OnDestroy()
+    {
+        m_PlayerHealthText.text = "";
+        m_PlayerHealthText.gameObject.SetActive(false);
+    }
+
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
     //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
-    [Server]
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
         if (isServer)
