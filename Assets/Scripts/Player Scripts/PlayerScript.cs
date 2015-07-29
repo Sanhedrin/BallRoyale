@@ -177,6 +177,11 @@ public class PlayerScript : NetworkBehaviour
             if (i_CollisionInfo.gameObject.CompareTag(ConstNames.PlayerTag))
             {
                 StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
+
+                var otherPos = i_CollisionInfo.gameObject.transform.position;
+                var Pos = transform.position;
+
+                m_Health += (int)(10 * m_Rigidbody.velocity.sqrMagnitude * (Vector3.Dot(Pos, otherPos) / (Pos.sqrMagnitude * otherPos.sqrMagnitude)));
             }
         }
     }
