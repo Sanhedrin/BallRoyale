@@ -75,7 +75,7 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     public void CmdRequestID()
     {
-        ((BallGameNetworkManager)BallGameNetworkManager.singleton).CmdRequestID((int)netId.Value, this);
+        BallGameNetworkManager.CmdRequestID((int)netId.Value, this);
     }
 
     [ClientRpc]
@@ -154,8 +154,10 @@ public class PlayerScript : NetworkBehaviour
 
     void OnDestroy()
     {
-        if (m_PlayerHealthText == null)
+        if (!m_PlayerHealthText)
+        {
             return;
+        }
 
         m_PlayerHealthText.text = "";
         m_PlayerHealthText.gameObject.SetActive(false);

@@ -7,13 +7,13 @@ using Assets.Scripts.Player_Scripts;
 
 public class BallGameNetworkManager : NetworkManager
 {
-    Dictionary<int, int> m_ConnectionIDToLocalID = new Dictionary<int, int>();
-    Dictionary<int, PlayerScript> m_ConnectionIDToPlayer = new Dictionary<int, PlayerScript>();
+    private static Dictionary<int, int> m_ConnectionIDToLocalID = new Dictionary<int, int>();
+    private static Dictionary<int, PlayerScript> m_ConnectionIDToPlayer = new Dictionary<int, PlayerScript>();
 
     /// <summary>
     /// Requests the server to assign client an ID
     /// </summary>
-    public void CmdRequestID(int i_NetID, PlayerScript i_RequestingPlayer)
+    public static void CmdRequestID(int i_NetID, PlayerScript i_RequestingPlayer)
     {
         int connectionID = i_RequestingPlayer.connectionToClient.connectionId;
         int assignedID = m_ConnectionIDToLocalID[connectionID];
