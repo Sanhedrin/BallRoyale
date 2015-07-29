@@ -11,6 +11,7 @@ using Assets.Scripts.Player_Scripts;
 /// <summary>
 /// The base script for the player will manage the display and stats of the player, as well as network synchronization.
 /// </summary>
+[RequireComponent(typeof(PlayerControls))]
 public class PlayerScript : NetworkBehaviour
 {
     /// <summary>
@@ -153,6 +154,9 @@ public class PlayerScript : NetworkBehaviour
 
     void OnDestroy()
     {
+        if (m_PlayerHealthText == null)
+            return;
+
         m_PlayerHealthText.text = "";
         m_PlayerHealthText.gameObject.SetActive(false);
     }

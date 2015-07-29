@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 /// <summary>
 /// Manages player input and their effect.
 /// </summary>
+[RequireComponent(typeof(PlayerScript))]
 public class PlayerControls : NetworkBehaviour 
 {
     [SyncVar]
