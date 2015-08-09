@@ -55,8 +55,10 @@ public class PlayerControls : NetworkBehaviour
             float moveHorizontal = Input.GetAxis(ConstNames.HorizontalAxis);
             float moveVertical = Input.GetAxis(ConstNames.VerticalAxis);
             bool jump = Input.GetButtonDown(ConstNames.JumpButton) && m_Grounded;
+            bool breakButton = Input.GetButton(ConstNames.BreakButton) && m_Grounded;
+            
 
-            CmdMovementManagement(moveHorizontal, moveVertical, jump);
+            CmdMovementManagement(moveHorizontal, moveVertical, jump, breakButton);
         }
     }
 
@@ -76,7 +78,7 @@ public class PlayerControls : NetworkBehaviour
     /// <param name="i_Vertical">Amount of vertical movement.</param>
     /// <param name="i_Jump">Indicates if the player should jump.</param>
     [Command]
-    private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump)
+    private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_breakButton)
     {
         Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
         m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
@@ -84,6 +86,15 @@ public class PlayerControls : NetworkBehaviour
         if (i_Jump)
         {
             m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
+        }
+        
+        if(i_breakButton)
+        {
+            m_Rigidbody.drag = 2f;
+        }
+        else
+        {
+            m_Rigidbody.drag = 0f;
         }
     }
 

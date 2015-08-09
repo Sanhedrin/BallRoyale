@@ -9,4 +9,5 @@ public static class ConstNames{
     public const string KillBoxLayer = "KillBox";
     public const string JumpButton = "Jump";
     public const string FireButton = "Fire1";
+    public const string BreakButton = "Break";
 }
