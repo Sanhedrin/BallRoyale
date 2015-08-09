@@ -17,7 +17,7 @@ public class GameMenuUI : MonoBehaviour
 
     }
 
-
+    
     public void StartHosting()
     {
         NetworkManager.singleton.StartHost();
@@ -25,6 +25,7 @@ public class GameMenuUI : MonoBehaviour
 
     public void JoinGame()
     {
+        NetworkManager.singleton.networkAddress = "192.168.199.190";
         NetworkManager.singleton.StartClient();
     }
 }

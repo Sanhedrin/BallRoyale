@@ -94,7 +94,7 @@ public class PlayerControls : NetworkBehaviour
         }
         else
         {
-            m_Rigidbody.drag = 0f;
+            m_Rigidbody.drag = 0.35f;
         }
     }
 
