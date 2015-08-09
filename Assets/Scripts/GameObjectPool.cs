@@ -8,9 +8,9 @@ namespace Assets.Scripts
 {
     public class GameObjectPool
     {
-        List<GameObject> m_GameObjectList;
+        private List<GameObject> m_GameObjectList = new List<GameObject>();
 
-        GameObject m_PoolObj = null;
+        private GameObject m_PoolObj = null;
 
         public GameObjectPool(GameObject i_GameObjForPool, int i_Amount = 0)
         { 
@@ -49,6 +49,5 @@ namespace Assets.Scripts
 
             return objToPull;  
         }
-
     }
 }
