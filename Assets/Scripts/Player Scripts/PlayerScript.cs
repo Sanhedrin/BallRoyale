@@ -22,6 +22,11 @@ public class PlayerScript : NetworkBehaviour
     private void OnHealthChanged(int i_NewHealth)
     {
         m_Health = i_NewHealth < k_MaxHealth ? i_NewHealth : k_MaxHealth;
+        
+        if (!m_PlayerHealthText)
+        {
+            Debug.LogError("Health not connected");
+        }
     }
 
     private const int k_MaxHealth = 999;

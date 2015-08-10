@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.Networking;
-using Assets.Scripts;
-using Assets.Scripts.Player_Scripts;
+using System.Collections.Generic;
 
-[AddComponentMenu("BallGame Scripts/Network/Ball Game Network Manager")]
-public class BallGameNetworkManager : NetworkManager
-{
+[AddComponentMenu("BallGame Scripts/Network/Ball Game Network Lobby Manager")]
+public class BallGameNetworkLobbyManager : NetworkLobbyManager {
+
     private static Dictionary<int, int> m_ConnectionIDToLocalID = new Dictionary<int, int>();
     private static Dictionary<int, PlayerScript> m_ConnectionIDToPlayer = new Dictionary<int, PlayerScript>();
 
@@ -23,7 +21,7 @@ public class BallGameNetworkManager : NetworkManager
         {
             m_ConnectionIDToPlayer.Add(connectionID, i_RequestingPlayer);
         }
-        
+
         i_RequestingPlayer.RpcIDAssignmentResponse(assignedID);
     }
 
@@ -39,7 +37,7 @@ public class BallGameNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnection conn)
     {
-        m_ConnectionIDToLocalID.Add(conn.connectionId, numPlayers+1);
+        m_ConnectionIDToLocalID.Add(conn.connectionId, numPlayers + 1);
         base.OnServerConnect(conn);
     }
 
