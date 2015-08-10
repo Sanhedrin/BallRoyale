@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts
-{
+
     public class GameObjectPool
     {
         private List<GameObject> m_GameObjectList = new List<GameObject>();
@@ -17,11 +16,11 @@ namespace Assets.Scripts
             m_PoolObj = i_GameObjForPool;
             for (int i = 0; i < i_Amount; i++)
             {
-                PushObject();
+                addToPool();
             }
         }
 
-        public void PushObject()
+        private void addToPool()
         {
             GameObject newGameobj = GameObject.Instantiate(m_PoolObj);
             newGameobj.SetActive(false);
@@ -43,11 +42,11 @@ namespace Assets.Scripts
 
             if (objToPull == null)
             {
-                PushObject();
+                addToPool();
                 objToPull = m_GameObjectList[m_GameObjectList.Count - 1];
             }
 
             return objToPull;  
         }
     }
-}
+

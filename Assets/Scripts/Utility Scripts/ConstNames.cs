@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class ConstNames{
+public static class ConstNames
+{
     public const string HorizontalAxis = "Horizontal";
     public const string VerticalAxis = "Vertical";
     public const string PlayerTag = "Player";
@@ -10,4 +11,11 @@ public static class ConstNames{
     public const string JumpButton = "Jump";
     public const string FireButton = "Fire1";
     public const string BreakButton = "Break";
+
 }
+
+    public enum eObjectPoolNames
+    {
+        Bullet
+    }
+
