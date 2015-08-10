@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+[AddComponentMenu("BallGame Scripts/Utilities/Object Pool Manager")]
 public class ObjectPoolManager : MonoBehaviour
 {
     public List<GameObject> ObjectsToPool = new List<GameObject>();
@@ -22,6 +23,7 @@ public class ObjectPoolManager : MonoBehaviour
             m_ObjectPoolDictionary.Add(key, new GameObjectPool(ObjectsToPool[(int)key], 10));
         }
     }
+
     public GameObjectPool GetPoolForObject(eObjectPoolNames i_ObjectName)
     {
         return m_ObjectPoolDictionary[i_ObjectName];
