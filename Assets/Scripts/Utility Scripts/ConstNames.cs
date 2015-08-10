@@ -16,6 +16,6 @@ public static class ConstNames
 
     public enum eObjectPoolNames
     {
-        Bullet
+        Bullet = 0
     }
 
