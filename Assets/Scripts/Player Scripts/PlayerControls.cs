@@ -27,9 +27,6 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField]
     private float m_JumpSpeed = 350;
 
-    [SerializeField]
-    private float m_ProjectileSpeed = 30;
-
 	// Use this for initialization
     void Start()
     {
@@ -54,10 +51,7 @@ public class PlayerControls : NetworkBehaviour
 	// Update is called once per frame
     void Update()
     {
-        if (isLocalPlayer && Input.GetButtonDown(ConstNames.FireButton))
-        {
-            CmdShoot();
-        }
+
 	}
 
     /// <summary>
@@ -84,23 +78,6 @@ public class PlayerControls : NetworkBehaviour
         else
         {
             m_Rigidbody.drag = 0.35f;
-        }
-    }
-
-    [Command]
-    void CmdShoot()
-    {
-        Vector3 velocityDir = m_Rigidbody.velocity.normalized * transform.localScale.x;
-
-        if (Vector3.zero != velocityDir)
-        {
-            GameObject currObj = ObjectPoolManager.Instance.GetPoolForObject(eObjectPoolNames.Bullet).PullObject();
-
-            currObj.transform.position = transform.position + velocityDir;
-            currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
-            currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
-            currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
-            currObj.SetActive(true);           
         }
     }
 
