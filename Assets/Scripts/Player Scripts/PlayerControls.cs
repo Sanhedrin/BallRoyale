@@ -31,21 +31,11 @@ public class PlayerControls : NetworkBehaviour
     private float m_ProjectileSpeed = 30;
 
     const int k_ProjectilePooledAmount = 10;
-    List<GameObject> m_ProjectilePool;
 
 	// Use this for initialization
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-
-        //Creating the pool of projectiles
-        m_ProjectilePool = new List<GameObject>();
-        for (int i = 0; i < k_ProjectilePooledAmount; i++)
-        {
-            GameObject obj = Instantiate(m_ProjectilePrefab);
-            obj.SetActive(false);
-            m_ProjectilePool.Add(obj);
-        }
 	}
 
     void FixedUpdate()
@@ -101,24 +91,17 @@ public class PlayerControls : NetworkBehaviour
 
     void Shoot()
     {
-        Vector3 velocityDir = m_Rigidbody.velocity.normalized;
+        Vector3 velocityDir = m_Rigidbody.velocity.normalized * transform.localScale.x;
 
         if (Vector3.zero != velocityDir)
         {
-            for (int i = 0; i < k_ProjectilePooledAmount; i++)
-            {
-                GameObject currObj = m_ProjectilePool[i];
+            GameObject currObj = ObjectPoolManager.Instance.GetPoolForObject(eObjectPoolNames.Bullet).PullObject();
 
-                if (!currObj.activeInHierarchy)
-                {
-                    currObj.transform.position = transform.position + velocityDir;
-                    currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
-                    currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
-                    currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
-                    currObj.SetActive(true);
-                    break;
-                }
-            }
+            currObj.transform.position = transform.position + velocityDir;
+            currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
+            currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
+            currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
+            currObj.SetActive(true);           
         }
     }
 

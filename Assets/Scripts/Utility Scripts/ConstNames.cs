@@ -12,6 +12,8 @@ public static class ConstNames
     public const string FireButton = "Fire1";
     public const string BreakButton = "Break";
 
+    public const string ObjectPoolManager = "ObjectPoolManager";
+
 }
 
     public enum eObjectPoolNames
