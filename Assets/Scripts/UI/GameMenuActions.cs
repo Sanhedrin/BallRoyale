@@ -14,17 +14,21 @@ public class GameMenuActions : MonoBehaviour
 
     public void JoinGame()
     {
-        if (string.IsNullOrEmpty(HostIP.text))
-            return;
+        //if (string.IsNullOrEmpty(HostIP.text))
+        //    return;
 
-        System.Net.IPAddress IPCheck;
+        //System.Net.IPAddress IPCheck;
 
-        if (!System.Net.IPAddress.TryParse(HostIP.text, out IPCheck))
+        //if (!System.Net.IPAddress.TryParse(HostIP.text, out IPCheck))
+        //{
+        //    return;
+        //}
+
+        if (HostIP.text != "")
         {
-            return;
+            NetworkManager.singleton.networkAddress = HostIP.text;
         }
 
-        NetworkManager.singleton.networkAddress = HostIP.text;
         NetworkManager.singleton.StartClient();
     }
 
