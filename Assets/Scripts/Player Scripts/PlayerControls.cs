@@ -30,8 +30,6 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField]
     private float m_ProjectileSpeed = 30;
 
-    const int k_ProjectilePooledAmount = 10;
-
 	// Use this for initialization
     void Start()
     {
