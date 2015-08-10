@@ -6,6 +6,16 @@ using System;
 [AddComponentMenu("BallGame Scripts/Utilities/Object Pool Manager")]
 public class ObjectPoolManager : MonoBehaviour
 {
+    private static ObjectPoolManager m_Instance = null;
+    public static ObjectPoolManager Instance
+    {
+        get
+        {
+            return m_Instance;
+        }
+    }
+
+
     public List<GameObject> ObjectsToPool = new List<GameObject>();
     public List<eObjectPoolNames> ObjectPoolNames = new List<eObjectPoolNames>();
     
@@ -13,7 +23,9 @@ public class ObjectPoolManager : MonoBehaviour
    
     void Start()
     {
-        if (GameObject.FindGameObjectsWithTag("ObjectPool").Length > 1)
+        m_Instance = this;
+
+        if (GameObject.FindGameObjectsWithTag(ConstNames.ObjectPoolManager).Length > 1)
         {
             Debug.LogError("Can't have more than one Object Pool Manager in a scene.");
         }
