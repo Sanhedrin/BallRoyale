@@ -74,9 +74,12 @@ public class ObjectPoolManagerEditor : Editor {
 
         EditorGUILayout.EndVertical();
 
-        if (GUI.changed)
+        if (!Application.isPlaying)
         {
-            serializedObject.ApplyModifiedProperties();
+            if (GUI.changed)
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
         }
     }
 }

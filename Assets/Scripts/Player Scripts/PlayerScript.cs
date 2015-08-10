@@ -28,6 +28,9 @@ public class PlayerScript : NetworkBehaviour
 
     private const int k_DamageReduction = 10;
 
+    [SerializeField]
+    private Texture[] m_PlayerTextures;
+
     /// <summary>
     /// How the knockback should be calculated from the health. The lower this is, the higher the knockback scaling becomes.
     /// </summary>
@@ -103,6 +106,12 @@ public class PlayerScript : NetworkBehaviour
     {
         m_ConnectionID = e.ID;
         AssignTextForPlayer(e.ID);
+        AssignTextureForPlayer(e.ID);
+    }
+
+    private void AssignTextureForPlayer(int i_PlayerID)
+    {
+        GetComponent<Renderer>().material.mainTexture = m_PlayerTextures[i_PlayerID - 1];
     }
 
     /// <summary>
