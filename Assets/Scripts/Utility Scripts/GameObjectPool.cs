@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-
+using UnityEngine.Networking;
 
 public class GameObjectPool
 {
@@ -14,6 +14,7 @@ public class GameObjectPool
     public GameObjectPool(GameObject i_GameObjForPool, int i_Amount = 0)
     { 
         m_PoolObj = i_GameObjForPool;
+
         for (int i = 0; i < i_Amount; i++)
         {
             addToPool();
@@ -25,6 +26,7 @@ public class GameObjectPool
         GameObject newGameobj = GameObject.Instantiate(m_PoolObj);
         newGameobj.SetActive(false);
         m_GameObjectList.Add(newGameobj);
+        NetworkServer.Spawn(newGameobj);
     }
 
     public GameObject PullObject()

@@ -58,7 +58,7 @@ public class PlayerControls : NetworkBehaviour
     {
         if (isLocalPlayer && Input.GetButtonDown(ConstNames.FireButton))
         {
-            Shoot();
+            CmdShoot();
         }
 	}
 
@@ -89,7 +89,8 @@ public class PlayerControls : NetworkBehaviour
         }
     }
 
-    void Shoot()
+    [Command]
+    void CmdShoot()
     {
         Vector3 velocityDir = m_Rigidbody.velocity.normalized * transform.localScale.x;
 

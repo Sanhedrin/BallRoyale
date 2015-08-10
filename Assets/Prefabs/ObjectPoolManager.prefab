@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 433964}
   - 114: {fileID: 11456268}
+  - 114: {fileID: 11408716}
   m_Layer: 0
   m_Name: ObjectPoolManager
   m_TagString: ObjectPoolManager
@@ -28,6 +29,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11408716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 250
+    i1: 0
+    i2: 75
+    i3: 203
+    i4: 152
+    i5: 99
+    i6: 115
+    i7: 164
+    i8: 89
+    i9: 204
+    i10: 74
+    i11: 80
+    i12: 244
+    i13: 138
+    i14: 106
+    i15: 174
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11456268
 MonoBehaviour:
   m_ObjectHideFlags: 1
