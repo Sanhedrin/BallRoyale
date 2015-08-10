@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
 public class Projectile : MonoBehaviour
 {
     private Rigidbody m_OtherRigidBody;
@@ -31,7 +32,7 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider i_Other)
     {
-        if (i_Other.tag == "Player")
+        if (i_Other.tag == ConstNames.PlayerTag)
         {
             m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("BallGame Scripts/UI/Menu Manager")]
 public class MenuManager : MonoBehaviour
 {
     public Menu CurrentMenu;

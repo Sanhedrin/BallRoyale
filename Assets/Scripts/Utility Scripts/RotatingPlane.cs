@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("BallGame Scripts/Utilities/Rotating Plane")]
 public class RotatingPlane : MonoBehaviour
 {
 

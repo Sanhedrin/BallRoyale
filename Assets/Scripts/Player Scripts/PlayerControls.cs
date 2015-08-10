@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 /// Manages player input and their effect.
 /// </summary>
 [RequireComponent(typeof(PlayerScript))]
+[AddComponentMenu("BallGame Scripts/Player/Player Script")]
 public class PlayerControls : NetworkBehaviour 
 {
     [SyncVar]

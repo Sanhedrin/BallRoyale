@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("BallGame Scripts/UI/Game Menu")]
 public class Menu : MonoBehaviour
 {
     private Animator _animator;

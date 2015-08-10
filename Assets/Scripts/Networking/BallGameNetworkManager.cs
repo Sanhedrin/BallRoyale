@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using Assets.Scripts;
 using Assets.Scripts.Player_Scripts;
 
+[AddComponentMenu("BallGame Scripts/Ball Game Network Manager")]
 public class BallGameNetworkManager : NetworkManager
 {
     private static Dictionary<int, int> m_ConnectionIDToLocalID = new Dictionary<int, int>();

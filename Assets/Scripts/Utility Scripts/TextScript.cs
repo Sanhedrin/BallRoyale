@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
+[AddComponentMenu("BallGame Scripts/Utilities/Text Removal")]
 public class TextScript : MonoBehaviour
 {
     public Text Text;

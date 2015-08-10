@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
+[AddComponentMenu("BallGame Scripts/UI/Game Menu Actions")]
 public class GameMenuActions : MonoBehaviour
 {
     public UnityEngine.UI.InputField HostIP;
