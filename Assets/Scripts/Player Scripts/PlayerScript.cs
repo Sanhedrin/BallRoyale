@@ -26,6 +26,8 @@ public class PlayerScript : NetworkBehaviour
 
     private const int k_MaxHealth = 999;
 
+    private const int k_DamageReduction = 10;
+
     /// <summary>
     /// How the knockback should be calculated from the health. The lower this is, the higher the knockback scaling becomes.
     /// </summary>
@@ -178,10 +180,13 @@ public class PlayerScript : NetworkBehaviour
             {
                 StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
 
-                var otherPos = i_CollisionInfo.gameObject.transform.position;
-                var Pos = transform.position;
+                int baseDamage = (int)(i_CollisionInfo.relativeVelocity.sqrMagnitude - i_CollisionInfo.collider.GetComponent<Rigidbody>().velocity.sqrMagnitude);
+                baseDamage /= k_DamageReduction;
 
-                m_Health += (int)(10 * m_Rigidbody.velocity.sqrMagnitude * (Vector3.Dot(Pos, otherPos) / (Pos.sqrMagnitude * otherPos.sqrMagnitude)));
+                m_Health += baseDamage < 0 ? 0 : baseDamage;
+
+                //float hitCosine = Vector3.Dot(playerPos, otherPos) / (playerPos.sqrMagnitude * otherPos.sqrMagnitude);
+                //m_Health += (int)(hitCosine * m_Rigidbody.velocity.sqrMagnitude);
             }
         }
     }
