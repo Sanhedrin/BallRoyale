@@ -11,6 +11,8 @@ public static class ConstNames
     public const string JumpButton = "Jump";
     public const string FireButton = "Fire1";
     public const string BreakButton = "Break";
+    public const string PlayerLayer = "PlayerLayer";
+    public const string PhasedLayer = "Phased";
 
     public const string ObjectPoolManager = "ObjectPoolManager";
 
