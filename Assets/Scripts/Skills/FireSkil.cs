@@ -2,9 +2,21 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class FireSkil : Skill
+[AddComponentMenu("BallGame Scripts/Skills/Fire")]
+public sealed class FireSkil : Skill
 {
     private float m_ProjectileSpeed = 30f;
+    private Rigidbody m_PlayerRigidbody;
+
+    protected override void OnAttachedToPlayer()
+    {
+        m_PlayerRigidbody = m_PlayerObject.GetComponent<Rigidbody>();
+    }
+
+    protected override void OnDetachedFromPlayer()
+    {
+        m_PlayerRigidbody = null;
+    }
 
     public override void Activate()
     {
@@ -14,13 +26,13 @@ public class FireSkil : Skill
     [Command]
     private void CmdShoot()
     {
-        Vector3 velocityDir = GetComponent<Rigidbody>().velocity.normalized * transform.localScale.x;
+        Vector3 velocityDir = m_PlayerRigidbody.velocity.normalized * m_PlayerObject.transform.localScale.x;
 
         if (Vector3.zero != velocityDir)
         {
             GameObject currObj = ObjectPoolManager.Instance.GetPoolForObject(eObjectPoolNames.Bullet).PullObject();
 
-            currObj.transform.position = transform.position + velocityDir;
+            currObj.transform.position = m_PlayerObject.transform.position + velocityDir;
             currObj.transform.rotation = Quaternion.LookRotation(velocityDir);
             currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
             currObj.GetComponent<Rigidbody>().velocity = velocityDir * m_ProjectileSpeed;
@@ -31,7 +43,6 @@ public class FireSkil : Skill
     [ClientRpc]
     private void RpcActivateBullet(GameObject i_gameObj)
     {
-        Debug.Log("I'm here! Witness me!");
         i_gameObj.SetActive(true);
     }
 

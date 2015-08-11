@@ -1,10 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PhaseShiftSkill : Skill
+[AddComponentMenu("BallGame Scripts/Skills/Phase Shift")]
+public sealed class PhaseShiftSkill : Skill
 {
+    protected override void OnAttachedToPlayer()
+    {
+        
+    }
+
+    protected override void OnDetachedFromPlayer()
+    {
+        
+    }
+
     public override void Activate()
     {
-        gameObject.layer = LayerMask.NameToLayer(ConstNames.PhasedLayer);
+        m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstNames.PhasedLayer);
     }
 }

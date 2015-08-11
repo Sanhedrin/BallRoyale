@@ -71,8 +71,6 @@ public class PlayerScript : NetworkBehaviour
 
 
         Random.seed = System.DateTime.Now.Millisecond;
-
-        gameObject.AddComponent(typeof(FireSkil));
 	}
 	
 	// Update is called once per frame, non-physics updates should be writen here.
