@@ -31,7 +31,7 @@ public abstract class Skill : NetworkBehaviour
         {
             if (Input.GetButtonDown(ConstNames.FireButton) && m_PlayerObject.isLocalPlayer)
             {
-                Activate();
+                m_PlayerObject.ActivateSkill();
             }
         }
     }
@@ -44,7 +44,7 @@ public abstract class Skill : NetworkBehaviour
         m_AttachedToPlayer = true;
         m_Collider.enabled = false;
         m_Renderer.enabled = false;
-
+      
         OnAttachedToPlayer();
     }
 

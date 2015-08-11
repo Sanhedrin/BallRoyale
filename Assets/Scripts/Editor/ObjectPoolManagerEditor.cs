@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 [CustomEditor(typeof(ObjectPoolManager))]
-public class ObjectPoolManagerEditor : Editor {
-    
+public class ObjectPoolManagerEditor : Editor
+{
+
     private int m_ListSize = 0;
-    
+
     private ObjectPoolManager poolManager;
 
     private bool m_PoolListsExpanded = true;
@@ -27,7 +28,7 @@ public class ObjectPoolManagerEditor : Editor {
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Amount of pools:");
-        
+
         m_ListSize = EditorGUILayout.IntField(poolManager.ObjectPoolNames.Count);
 
         if (m_ListSize != poolManager.ObjectPoolNames.Count)

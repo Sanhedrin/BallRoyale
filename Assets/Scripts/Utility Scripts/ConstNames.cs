@@ -20,8 +20,9 @@ public static class ConstNames
 
 public enum eObjectPoolNames
 {
-    Bullet,
-    Player,
-    PowerupItem
+    Bullet = 0,
+    PowerupItem,
+    Player
+   
 }
 
