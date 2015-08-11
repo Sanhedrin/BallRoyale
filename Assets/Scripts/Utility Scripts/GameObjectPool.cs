@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 using Random = UnityEngine.Random;
 
 [Serializable]
-public class GameObjectPool : ScriptableObject
+public class GameObjectPool 
 {
     [SerializeField]
     private List<GameObject> m_GameObjectList = new List<GameObject>();

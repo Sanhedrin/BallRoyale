@@ -51,6 +51,7 @@ public abstract class Skill : NetworkBehaviour
     [ClientRpc]
     private void RpcDetachSkill()
     {
+        transform.position = new Vector3(-1337, -1337, -1337);
         transform.SetParent(null);
         m_PlayerObject = null;
         m_AttachedToPlayer = false;
@@ -58,6 +59,8 @@ public abstract class Skill : NetworkBehaviour
         m_Renderer.enabled = true;
 
         OnDetachedFromPlayer();
+
+        gameObject.SetActive(false);
     }
 
     [Server]
@@ -66,7 +69,6 @@ public abstract class Skill : NetworkBehaviour
         yield return new WaitForSeconds(i_Seconds);
 
         RpcDetachSkill();
-        ObjectPoolManager.Instance.GetPoolForObject(eObjectPoolNames.PowerupItem);
     }
 
     private void OnTriggerEnter(Collider i_Collider)

@@ -72,7 +72,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ac745b4e542fa4ba366aaf8ffec6c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectPoolNames: 0000000000000000
+  ObjectsToPool:
+  - InnerList:
+    - {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
+  - InnerList:
+    - {fileID: 133536, guid: 3f75167d734daeb4cb8dacf0f5a6cac5, type: 2}
+  ObjectPoolNames: 0000000001000000
+  ObjectPoolStartAmounts:
+  - InnerList: 0a000000
+  - InnerList: 0a000000
   SubListSizes: 0000000000000000
 --- !u!1001 &100100000
 Prefab:
