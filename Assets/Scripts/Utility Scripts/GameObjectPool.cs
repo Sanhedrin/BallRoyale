@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using Random = UnityEngine.Random;
 
-public class GameObjectPool
+[Serializable]
+public class GameObjectPool : ScriptableObject
 {
+    [SerializeField]
     private List<GameObject> m_GameObjectList = new List<GameObject>();
 
+    [SerializeField]
     private GameObject m_PoolObj = null;
 
     public GameObjectPool(GameObject i_GameObjForPool, int i_Amount = 0)
@@ -45,10 +49,10 @@ public class GameObjectPool
         if (objToPull == null)
         {
             addToPool();
-            objToPull = m_GameObjectList[m_GameObjectList.Count - 1];
+            objToPull = m_GameObjectList[Random.Range(0, m_GameObjectList.Count - 1)];
         }
 
-        return objToPull;  
+        return objToPull; 
     }
 }
 

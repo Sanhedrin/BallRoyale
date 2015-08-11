@@ -72,8 +72,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ac745b4e542fa4ba366aaf8ffec6c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectsToPool: []
-  ObjectPoolNames: 
+  ObjectPoolNames: 0000000000000000
+  SubListSizes: 0000000000000000
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
