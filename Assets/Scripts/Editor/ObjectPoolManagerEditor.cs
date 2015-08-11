@@ -8,7 +8,6 @@ using System;
 [Serializable]
 public class ObjectPoolManagerEditor : Editor
 {
-
     [SerializeField]
     private int m_ListSize = 0;
 

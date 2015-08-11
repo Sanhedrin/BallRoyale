@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 [AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
-public class Projectile : MonoBehaviour
+public class Projectile : NetworkBehaviour
 {
     private Rigidbody m_OtherRigidBody;
 
@@ -16,9 +17,13 @@ public class Projectile : MonoBehaviour
 
     void OnEnable()
     {
-        StartCoroutine(DestroyProjectile(m_LifeTime));
+        if (isServer)
+        {
+            StartCoroutine(DestroyProjectile(m_LifeTime));
+        }
     }
 
+    [Server]
     IEnumerator DestroyProjectile(float i_StartIn)
     {
         yield return new WaitForSeconds(i_StartIn);
@@ -32,13 +37,16 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider i_Other)
     {
-        if (i_Other.tag == ConstNames.PlayerTag)
+        if (isServer)
         {
-            m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
+            if (i_Other.tag == ConstNames.PlayerTag)
+            {
+                m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
 
-            //TODO: improve the explosion effect/behaviour
-            m_OtherRigidBody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
-            gameObject.SetActive(false);
+                //TODO: improve the explosion effect/behaviour
+                m_OtherRigidBody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
+                gameObject.SetActive(false);
+            }
         }
     }
 }

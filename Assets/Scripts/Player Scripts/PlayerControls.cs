@@ -2,13 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using Assets.Scripts.Player_Scripts;
+using System;
 
 /// <summary>
 /// Manages player input and their effect.
 /// </summary>
 [RequireComponent(typeof(PlayerScript))]
 [AddComponentMenu("BallGame Scripts/Player/Player Script")]
-public class PlayerControls : NetworkBehaviour 
+public class PlayerControls : NetworkBehaviour
 {
     [SyncVar]
     private bool m_Grounded = false;
@@ -27,11 +29,11 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField]
     private float m_JumpSpeed = 350;
 
-	// Use this for initialization
+    // Use this for initialization
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-	}
+    }
 
     void FixedUpdate()
     {
@@ -42,17 +44,16 @@ public class PlayerControls : NetworkBehaviour
             float moveVertical = Input.GetAxis(ConstNames.VerticalAxis);
             bool jump = Input.GetButtonDown(ConstNames.JumpButton) && m_Grounded;
             bool breakButton = Input.GetButton(ConstNames.BreakButton) && m_Grounded;
-            
+
 
             CmdMovementManagement(moveHorizontal, moveVertical, jump, breakButton);
         }
     }
 
-	// Update is called once per frame
+    // Update is called once per frame
     void Update()
     {
-
-	}
+    }
 
     /// <summary>
     /// Applies the movement on the server, which will then sync through the networkID to all the clients.
@@ -70,8 +71,8 @@ public class PlayerControls : NetworkBehaviour
         {
             m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
         }
-        
-        if(i_breakButton)
+
+        if (i_breakButton)
         {
             m_Rigidbody.drag = 2f;
         }
@@ -105,5 +106,17 @@ public class PlayerControls : NetworkBehaviour
                 m_Grounded = false;
             }
         }
+    }
+
+    [Client]
+    public void ActivateSkill()
+    {
+        CmdActivateSkill();
+    }
+
+    [Command]
+    private void CmdActivateSkill()
+    {
+        GetComponentInChildren<Skill>().Activate();
     }
 }

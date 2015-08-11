@@ -18,13 +18,13 @@ public sealed class FireSkil : Skill
         m_PlayerRigidbody = null;
     }
 
+    [Server]
     public override void Activate()
     {
-        CmdShoot();
+        Shoot();
     }
 
-    [Command]
-    private void CmdShoot()
+    private void Shoot()
     {
         Vector3 velocityDir = m_PlayerRigidbody.velocity.normalized * m_PlayerObject.transform.localScale.x;
 
