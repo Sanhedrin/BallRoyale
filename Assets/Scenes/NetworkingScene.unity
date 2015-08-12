@@ -632,27 +632,27 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: SubListSizes.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolNames.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[1].InnerList.Array.size
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[0].InnerList.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[2].InnerList.Array.size
@@ -660,11 +660,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[0].InnerList.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[1].InnerList.Array.size
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[2].InnerList.Array.size
@@ -704,31 +704,31 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolNames.Array.data[1]
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[0].InnerList.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[1].InnerList.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 133536, guid: 3f75167d734daeb4cb8dacf0f5a6cac5, type: 2}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[0].InnerList.Array.data[0]
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[1].InnerList.Array.data[0]
-      value: 3
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: SubListSizes.Array.data[0]
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: SubListSizes.Array.data[1]
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[0].InnerList.Array.data[1]
@@ -748,7 +748,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[1].InnerList.Array.data[1]
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[1].InnerList.Array.data[2]
@@ -766,6 +766,10 @@ Prefab:
       propertyPath: ObjectPoolStartAmounts.Array.data[2].InnerList.Array.data[2]
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
+      propertyPath: ObjectsToPool.Array.data[1].InnerList.Array.data[1]
+      value: 
+      objectReference: {fileID: 133536, guid: 3f75167d734daeb4cb8dacf0f5a6cac5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
   m_IsPrefabParent: 0
