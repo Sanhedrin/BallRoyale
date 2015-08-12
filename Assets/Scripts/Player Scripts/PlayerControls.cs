@@ -29,15 +29,18 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField]
     private float m_JumpSpeed = 350;
 
+    public List<StatusEffect> ActiveEffects { get; private set; }
+
     // Use this for initialization
     void Start()
     {
+        ActiveEffects = new List<StatusEffect>();
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer && !stunEffectActive())
         {
             //Query for the current state of relevent movement axes: (returns values from -1 to +1)
             float moveHorizontal = Input.GetAxis(ConstParams.HorizontalAxis);
@@ -49,10 +52,39 @@ public class PlayerControls : NetworkBehaviour
         }
     }
 
+    private bool stunEffectActive()
+    {
+        bool stunActive = false;
+
+        foreach (StatusEffect effect in ActiveEffects)
+        {
+            if (effect is StunEffect)
+            {
+                stunActive = true;
+                break;
+            }
+        }
+
+        return stunActive;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        effectTerminationCheckUp();
+    }
 
+    private void effectTerminationCheckUp()
+    {
+        foreach (StatusEffect effect in ActiveEffects)
+        {
+            TimeSpan timePassed = DateTime.Now - effect.LastStarted;
+            if (timePassed.TotalSeconds >= (double)effect.EffectTime)
+            {
+                ActiveEffects.Remove(effect);
+                effect.RevertEffect(m_Rigidbody);
+            }
+        }
     }
 
     /// <summary>

@@ -197,9 +197,6 @@ public class PlayerScript : NetworkBehaviour
                 baseDamage /= k_DamageReduction;
 
                 CmdDealDamage(baseDamage);
-
-                //float hitCosine = Vector3.Dot(playerPos, otherPos) / (playerPos.sqrMagnitude * otherPos.sqrMagnitude);
-                //m_Health += (int)(hitCosine * m_Rigidbody.velocity.sqrMagnitude);
             }
         }
     }

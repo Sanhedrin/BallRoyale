@@ -8,15 +8,15 @@ public class StunEffect : StatusEffect
 
     public StunEffect()
     {
-        ActivationTime = k_StunTime;
+        m_EffectTime = k_StunTime;
     }
 
-    public override void CmdActivateEffect(Rigidbody i_EffectedRigidBody)
+    public override void ActivateEffect(Rigidbody i_EffectedRigidBody)
     {
         i_EffectedRigidBody.velocity = Vector3.zero;
     }
-
-    public override void CmdRevertEffect(Rigidbody i_EffectedRigidBody)
+    
+    public override void RevertEffect(Rigidbody i_EffectedRigidBody)
     {
     }
 }

@@ -5,9 +5,24 @@ using System;
 public abstract class StatusEffect
 {
     //Set Activation time in inheriting effect
-    protected int ActivationTime = 0;
-    protected DateTime m_LastStarted;
+    protected int m_EffectTime = 0;
+    public int EffectTime
+    {
+        get
+        {
+            return m_EffectTime;
+        }
+    }
 
-    public abstract void CmdActivateEffect(Rigidbody i_EffectedRigidBody);
-    public abstract void CmdRevertEffect(Rigidbody i_EffectedRigidBody);
+    protected DateTime m_LastStarted;
+    public DateTime LastStarted
+    {
+        get
+        {
+            return m_LastStarted;
+        }
+    }
+
+    public abstract void ActivateEffect(Rigidbody i_EffectedRigidBody);
+    public abstract void RevertEffect(Rigidbody i_EffectedRigidBody);
 }
