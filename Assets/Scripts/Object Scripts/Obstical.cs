@@ -16,7 +16,7 @@ public class Obstical : NetworkBehaviour
     [SerializeField]
     private float m_ExplosionRadius = 1000f;
 
-    protected virtual void OnEnable()
+    void OnEnable()
     {
         if (isServer)
         {
@@ -25,7 +25,7 @@ public class Obstical : NetworkBehaviour
     }
 
     [Server]
-    protected IEnumerator DestroyObsticl(float i_StartIn)
+    IEnumerator DestroyObsticl(float i_StartIn)
     {
         yield return new WaitForSeconds(i_StartIn);
         gameObject.SetActive(false);
