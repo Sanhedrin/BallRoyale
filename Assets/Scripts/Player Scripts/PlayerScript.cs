@@ -30,7 +30,6 @@ public class PlayerScript : NetworkBehaviour
     }
 
     private const int k_MaxHealth = 999;
-
     private const int k_DamageReduction = 10;
 
     [SerializeField]
@@ -185,12 +184,12 @@ public class PlayerScript : NetworkBehaviour
     {
         if (isServer)
         {
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.KillBoxLayer))
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.KillBoxLayer))
             {
                 serverRespawnPlayer();
             }
 
-            if (i_CollisionInfo.gameObject.CompareTag(ConstNames.PlayerTag))
+            if (i_CollisionInfo.gameObject.CompareTag(ConstParams.PlayerTag))
             {
                 StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
 

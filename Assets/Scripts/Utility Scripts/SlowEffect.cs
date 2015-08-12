@@ -4,12 +4,12 @@ using System;
 
 public class SlowEffect : StatusEffect
 {
-    
     private const int k_AddedDrag = 5;
+    private const int k_SlowTime = 2;
 
-    static SlowEffect()
+    public SlowEffect()
     {
-        ActivationTime = 2;
+        ActivationTime = k_SlowTime;
     }
 
     public override void CmdActivateEffect(Rigidbody i_EffectedRigidBody)

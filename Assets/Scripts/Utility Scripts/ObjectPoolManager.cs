@@ -34,7 +34,7 @@ public class ObjectPoolManager : NetworkBehaviour
         {
             m_Instance = this;
 
-            if (GameObject.FindGameObjectsWithTag(ConstNames.ObjectPoolManager).Length > 1)
+            if (GameObject.FindGameObjectsWithTag(ConstParams.ObjectPoolManager).Length > 1)
             {
                 Debug.LogError("Can't have more than one Object Pool Manager in a scene.");
             }

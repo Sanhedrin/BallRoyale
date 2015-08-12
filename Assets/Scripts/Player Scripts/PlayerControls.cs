@@ -40,11 +40,10 @@ public class PlayerControls : NetworkBehaviour
         if (isLocalPlayer)
         {
             //Query for the current state of relevent movement axes: (returns values from -1 to +1)
-            float moveHorizontal = Input.GetAxis(ConstNames.HorizontalAxis);
-            float moveVertical = Input.GetAxis(ConstNames.VerticalAxis);
-            bool jump = Input.GetButtonDown(ConstNames.JumpButton) && m_Grounded;
-            bool breakButton = Input.GetButton(ConstNames.BreakButton) && m_Grounded;
-
+            float moveHorizontal = Input.GetAxis(ConstParams.HorizontalAxis);
+            float moveVertical = Input.GetAxis(ConstParams.VerticalAxis);
+            bool jump = Input.GetButtonDown(ConstParams.JumpButton) && m_Grounded;
+            bool breakButton = Input.GetButton(ConstParams.BreakButton) && m_Grounded;
 
             CmdMovementManagement(moveHorizontal, moveVertical, jump, breakButton);
         }
@@ -53,6 +52,7 @@ public class PlayerControls : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+
     }
 
     /// <summary>
@@ -74,11 +74,11 @@ public class PlayerControls : NetworkBehaviour
 
         if (i_breakButton)
         {
-            m_Rigidbody.drag = 2f;
+            m_Rigidbody.drag = ConstParams.BreakDrag;
         }
         else
         {
-            m_Rigidbody.drag = 0.35f;
+            m_Rigidbody.drag = ConstParams.BaseDrag;
         }
     }
 
@@ -88,7 +88,7 @@ public class PlayerControls : NetworkBehaviour
     {
         if (isServer)
         {
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.FloorLayer))
             {
                 m_Grounded = true;
             }
@@ -101,7 +101,7 @@ public class PlayerControls : NetworkBehaviour
     {
         if (isServer)
         {
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstNames.FloorLayer))
+            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.FloorLayer))
             {
                 m_Grounded = false;
             }

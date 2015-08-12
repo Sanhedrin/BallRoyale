@@ -29,7 +29,7 @@ public abstract class Skill : NetworkBehaviour
     {
         if (m_AttachedToPlayer)
         {
-            if (Input.GetButtonDown(ConstNames.FireButton) && m_PlayerObject.isLocalPlayer)
+            if (Input.GetButtonDown(ConstParams.FireButton) && m_PlayerObject.isLocalPlayer)
             {
                 m_PlayerObject.ActivateSkill();
             }

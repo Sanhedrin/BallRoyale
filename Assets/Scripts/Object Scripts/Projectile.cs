@@ -39,7 +39,7 @@ public class Projectile : NetworkBehaviour
     {
         if (isServer)
         {
-            if (i_Other.tag == ConstNames.PlayerTag)
+            if (i_Other.tag == ConstParams.PlayerTag)
             {
                 m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
 

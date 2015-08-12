@@ -16,6 +16,6 @@ public sealed class PhaseShiftSkill : Skill
 
     public override void Activate()
     {
-        m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstNames.PhasedLayer);
+        m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstParams.PhasedLayer);
     }
 }
