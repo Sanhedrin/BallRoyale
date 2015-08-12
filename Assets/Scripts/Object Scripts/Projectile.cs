@@ -1,19 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using System;
 
 [AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
 public class Projectile : NetworkBehaviour
 {
-    private Rigidbody m_OtherRigidBody;
-
     private float m_LifeTime = 2f;
-
-    [SerializeField]
-    private float m_ExplosionForce = 1000f;
-
-    [SerializeField]
-    private float m_ExplosionRadius = 1000f;
+    const int k_ProjectileDamage = 100;
 
     void OnEnable()
     {
@@ -37,15 +31,34 @@ public class Projectile : NetworkBehaviour
 
     void OnTriggerEnter(Collider i_Other)
     {
+        //TODO: optimize, too many get component calls
         if (isServer)
         {
             if (i_Other.tag == ConstParams.PlayerTag)
             {
-                m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
+                PlayerScript player = i_Other.GetComponent<PlayerScript>();
+                player.CmdDealDamage(k_ProjectileDamage);
+                bool slowEffectFound = false;
+                Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
+                PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
+                
+                foreach (StatusEffect effect in playerControls.ActiveEffects)
+                {
+                    if (effect is SlowEffect)
+                    {
+                        slowEffectFound = true;
+                        effect.ActivateEffect(otherRigidBody);
+                        break;
+                    }
+                }
 
-                //TODO: improve the explosion effect/behaviour
-                m_OtherRigidBody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
-                gameObject.SetActive(false);
+                if (!slowEffectFound)
+                {
+                    SlowEffect slowEffect = new SlowEffect();
+
+                    playerControls.ActiveEffects.Add(slowEffect);
+                    slowEffect.ActivateEffect(otherRigidBody);
+                }
             }
         }
     }
