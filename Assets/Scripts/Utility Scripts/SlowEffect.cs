@@ -9,16 +9,16 @@ public class SlowEffect : StatusEffect
 
     public SlowEffect()
     {
-        m_EffectTime = k_SlowTime;
+        ActivationTime = k_SlowTime;
     }
 
-    public override void ActivateEffect(Rigidbody i_EffectedRigidBody)
+    public override void CmdActivateEffect(Rigidbody i_EffectedRigidBody)
     {
         m_LastStarted = DateTime.Now;
         i_EffectedRigidBody.drag += k_AddedDrag;
     }
 
-    public override void RevertEffect(Rigidbody i_EffectedRigidBody)
+    public override void CmdRevertEffect(Rigidbody i_EffectedRigidBody)
     {
         i_EffectedRigidBody.drag -= k_AddedDrag;
     }
