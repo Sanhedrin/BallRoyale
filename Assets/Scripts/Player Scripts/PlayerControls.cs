@@ -19,10 +19,6 @@ public class PlayerControls : NetworkBehaviour
     [HideInInspector]
     public Rigidbody m_Rigidbody;
 
-    // Instantiate a prefab with an attached Missile script
-    [SerializeField]
-    private GameObject m_ProjectilePrefab;
-
     [SerializeField]
     private float m_MoveSpeed = 20;
 
@@ -49,6 +45,10 @@ public class PlayerControls : NetworkBehaviour
             bool breakButton = Input.GetButton(ConstParams.BreakButton) && m_Grounded;
 
             CmdMovementManagement(moveHorizontal, moveVertical, jump, breakButton);
+            if (!isServer)
+            {
+                movementManagement(moveHorizontal, moveVertical, jump, breakButton);
+            }
         }
     }
 
@@ -94,7 +94,12 @@ public class PlayerControls : NetworkBehaviour
     /// <param name="i_Vertical">Amount of vertical movement.</param>
     /// <param name="i_Jump">Indicates if the player should jump.</param>
     [Command]
-    private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_breakButton)
+    private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    {
+        movementManagement(i_Horizontal, i_Vertical, i_Jump, i_BreakButton);
+    }
+
+    private void movementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
         Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
         m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
@@ -104,7 +109,7 @@ public class PlayerControls : NetworkBehaviour
             m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
         }
 
-        if (i_breakButton)
+        if (i_BreakButton)
         {
             m_Rigidbody.drag = ConstParams.BreakDrag;
         }
