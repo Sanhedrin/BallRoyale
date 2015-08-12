@@ -7,6 +7,7 @@ public class Obstical : NetworkBehaviour
 {
     private Rigidbody m_OtherRigidBody;
     
+    [SerializeField]
     private float m_LifeTime = 2f;
 
     [SerializeField]
