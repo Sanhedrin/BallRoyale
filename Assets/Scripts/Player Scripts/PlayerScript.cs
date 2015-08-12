@@ -197,11 +197,17 @@ public class PlayerScript : NetworkBehaviour
                 int baseDamage = (int)(i_CollisionInfo.relativeVelocity.sqrMagnitude - i_CollisionInfo.collider.GetComponent<Rigidbody>().velocity.sqrMagnitude);
                 baseDamage /= k_DamageReduction;
 
-                m_Health += baseDamage < 0 ? 0 : baseDamage;
+                CmdDealDamage(baseDamage);
 
                 //float hitCosine = Vector3.Dot(playerPos, otherPos) / (playerPos.sqrMagnitude * otherPos.sqrMagnitude);
                 //m_Health += (int)(hitCosine * m_Rigidbody.velocity.sqrMagnitude);
             }
         }
+    }
+
+    [Command]
+    public void CmdDealDamage(int i_BaseDamage)
+    {
+        m_Health += i_BaseDamage < 0 ? 0 : i_BaseDamage;
     }
 }
