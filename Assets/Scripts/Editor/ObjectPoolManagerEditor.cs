@@ -96,28 +96,19 @@ public class ObjectPoolManagerEditor : Editor
                 {
                     EditorGUI.indentLevel = 2;
 
+                    Debug.Log(m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize);
                     for (int j = 0; j < m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize; ++j)
                     {
                         EditorGUILayout.BeginHorizontal();
                         
-                        if (m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize > i)
+                        if (m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize > j)
                         {
                             EditorGUILayout.PropertyField(m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").GetArrayElementAtIndex(j), new GUIContent("Prefab"));
                         }
-                        else
-                        {
-                            m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").InsertArrayElementAtIndex(m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize);
-                            m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").GetArrayElementAtIndex(m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize - 1).objectReferenceValue = null;
-                        }
 
-                        if (m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize > i)
+                        if (m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize > j)
                         {
                             m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").GetArrayElementAtIndex(j).intValue = EditorGUILayout.IntField("Initial amount", m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").GetArrayElementAtIndex(j).intValue);
-                        }
-                        else
-                        {
-                            m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").InsertArrayElementAtIndex(m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize);
-                            m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").GetArrayElementAtIndex(m_ObjectPoolStartAmounts.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize - 1).intValue = 0;
                         }
 
                         EditorGUILayout.EndHorizontal();
