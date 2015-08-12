@@ -110,13 +110,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: .0333333351
+  m_SendInterval: .0500000007
   m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
+  m_RotationSyncCompression: 2
   m_SyncSpin: 0
   m_MovementTheshold: .00100000005
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
+  m_SnapThreshold: 1
+  m_InterpolateRotation: 20
   m_InterpolateMovement: 1
 --- !u!114 &11439526
 MonoBehaviour:
@@ -165,7 +165,6 @@ MonoBehaviour:
   m_ProjectilePrefab: {fileID: 181544, guid: a681cb0466acced4fb8bf536a2c18d35, type: 2}
   m_MoveSpeed: 20
   m_JumpSpeed: 350
-  m_ProjectileSpeed: 30
 --- !u!135 &13541108
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -236,7 +235,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_SendInterval
-      value: .0333333351
+      value: .0500000007
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_TransformSyncMode
@@ -280,6 +279,26 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_MovementTheshold
+      value: .00100000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_InterpolateMovement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_InterpolateRotation
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_RotationSyncCompression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_SnapThreshold
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
