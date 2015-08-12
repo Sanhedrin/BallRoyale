@@ -7,6 +7,7 @@ public class Obstical : NetworkBehaviour
 {
     private Rigidbody m_OtherRigidBody;
     
+    [SerializeField]
     private float m_LifeTime = 2f;
 
     [SerializeField]
@@ -37,6 +38,7 @@ public class Obstical : NetworkBehaviour
 
     void OnTriggerEnter(Collider i_Other)
     {
+        Debug.Log("דימה לא חבר");
         if (isServer)
         {
             if (i_Other.tag == ConstParams.PlayerTag)

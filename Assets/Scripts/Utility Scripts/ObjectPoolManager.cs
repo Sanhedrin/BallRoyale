@@ -18,10 +18,8 @@ public class ObjectPoolManager : NetworkBehaviour
         }
     }
 
-    [SerializeField]
     public List<GOListWrapper> ObjectsToPool = new List<GOListWrapper>();
     public List<eObjectPoolNames> ObjectPoolNames = new List<eObjectPoolNames>();
-    [SerializeField]
     public List<IntListWrapper> ObjectPoolStartAmounts = new List<IntListWrapper>();
     public List<int> SubListSizes = new List<int>();
 
