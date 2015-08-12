@@ -110,9 +110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: .0500000007
+  m_SendInterval: .0333333351
   m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 2
+  m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: .00100000005
   m_SnapThreshold: .100000001
@@ -165,6 +165,7 @@ MonoBehaviour:
   m_ProjectilePrefab: {fileID: 181544, guid: a681cb0466acced4fb8bf536a2c18d35, type: 2}
   m_MoveSpeed: 20
   m_JumpSpeed: 350
+  m_ProjectileSpeed: 30
 --- !u!135 &13541108
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -235,7 +236,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_SendInterval
-      value: .0500000007
+      value: .0333333351
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_TransformSyncMode
