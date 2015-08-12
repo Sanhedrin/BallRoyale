@@ -8,7 +8,7 @@ public class Obstical : NetworkBehaviour
     private Rigidbody m_OtherRigidBody;
     
     [SerializeField]
-    private float m_LifeTime = 2f;
+    protected float m_LifeTime = 2f;
 
     [SerializeField]
     private float m_ExplosionForce = 1000f;
@@ -16,10 +16,11 @@ public class Obstical : NetworkBehaviour
     [SerializeField]
     private float m_ExplosionRadius = 1000f;
 
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         if (isServer)
         {
+            Debug.Log("666");
             StartCoroutine(DestroyObsticl(m_LifeTime));
         }
     }
@@ -45,8 +46,8 @@ public class Obstical : NetworkBehaviour
             {
                 m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
 
-                
-                m_OtherRigidBody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
+
+                m_OtherRigidBody.AddForce(Vector3.up * 2000);
                 gameObject.SetActive(false);
             }
         }
