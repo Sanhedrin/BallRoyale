@@ -816,6 +816,10 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: .100000001
       objectReference: {fileID: 0}
+    - target: {fileID: 5412902, guid: 9cb0899164473e04ba31a84768041f58, type: 2}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9cb0899164473e04ba31a84768041f58, type: 2}
   m_IsPrefabParent: 0

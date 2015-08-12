@@ -38,6 +38,7 @@ public class Obstical : NetworkBehaviour
 
     void OnTriggerEnter(Collider i_Other)
     {
+        Debug.Log("דימה לא חבר");
         if (isServer)
         {
             if (i_Other.tag == ConstNames.PlayerTag)
