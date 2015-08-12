@@ -96,7 +96,6 @@ public class ObjectPoolManagerEditor : Editor
                 {
                     EditorGUI.indentLevel = 2;
 
-                    Debug.Log(m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize);
                     for (int j = 0; j < m_ObjectsToPool.GetArrayElementAtIndex(i).FindPropertyRelative("InnerList").arraySize; ++j)
                     {
                         EditorGUILayout.BeginHorizontal();
