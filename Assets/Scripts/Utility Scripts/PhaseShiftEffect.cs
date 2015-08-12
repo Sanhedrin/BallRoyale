@@ -7,12 +7,12 @@ public class PhaseShiftEffect : StatusEffect
 {
     public override void ActivateEffect(Rigidbody i_EffectedRigidBody)
     {
-        Renderer render = i_EffectedRigidBody.GetComponent<Renderer>();
         m_LastStarted = DateTime.Now;
+        Renderer render = i_EffectedRigidBody.GetComponent<Renderer>();
         if (!render.GetComponent<PlayerScript>().isLocalPlayer)
         {
             render.enabled = false;
-        }  
+        }
     }
 
     public override void RevertEffect(Rigidbody i_EffectedRigidBody)
@@ -20,6 +20,5 @@ public class PhaseShiftEffect : StatusEffect
         Renderer render = i_EffectedRigidBody.GetComponent<Renderer>();
         render.enabled = true;
     }
-
 }
 
