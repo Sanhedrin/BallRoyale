@@ -2137,7 +2137,7 @@ MonoBehaviour:
   m_LogLevel: 2
   m_PlayerPrefab: {fileID: 128554, guid: 2bd18e50de451f34d863bdd66fb0e80c, type: 2}
   m_AutoCreatePlayer: 1
-  m_PlayerSpawnMethod: 0
+  m_PlayerSpawnMethod: 1
   m_OfflineScene: GameMenu
   m_OnlineScene: NetworkingScene
   m_SpawnPrefabs:
@@ -2145,7 +2145,7 @@ MonoBehaviour:
   - {fileID: 128554, guid: 2bd18e50de451f34d863bdd66fb0e80c, type: 2}
   - {fileID: 147286, guid: 5baa89a702c70114999b4f17d8a241f6, type: 2}
   - {fileID: 133536, guid: 3f75167d734daeb4cb8dacf0f5a6cac5, type: 2}
-  m_CustomConfig: 0
+  m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1500
@@ -2166,9 +2166,9 @@ MonoBehaviour:
     m_MaxSentMessageQueueSize: 128
     m_IsAcksLong: 0
     m_Channels: []
-  m_Channels: 0500000000000000
+  m_Channels: 0500000007000000
   m_UseSimulator: 0
-  m_SimulatedLatency: 1
+  m_SimulatedLatency: 50
   m_PacketLossPercentage: 0
   m_MatchHost: mm.unet.unity3d.com
   m_MatchPort: 443

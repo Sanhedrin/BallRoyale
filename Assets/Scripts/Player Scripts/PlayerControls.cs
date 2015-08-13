@@ -31,6 +31,7 @@ public struct ControlCommandsCollection
 /// </summary>
 [RequireComponent(typeof(PlayerScript))]
 [AddComponentMenu("BallGame Scripts/Player/Player Script")]
+[NetworkSettings(channel=1, sendInterval=0.2f)]
 public class PlayerControls : NetworkBehaviour
 {
     [SyncVar]
@@ -91,25 +92,12 @@ public class PlayerControls : NetworkBehaviour
             {
                 CmdMovementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
             }
-
-            if (!isServer)
-            {
-                //movementManagement(moveHorizontal, moveVertical, jump, breakButton);
-            }
         }
     }
 
     [Command]
     private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
-        Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
-        m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
-
-        if (i_Jump)
-        {
-            m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
-        }
-
         if (i_BreakButton)
         {
             m_Rigidbody.drag = ConstParams.BreakDrag;
@@ -117,6 +105,14 @@ public class PlayerControls : NetworkBehaviour
         else
         {
             m_Rigidbody.drag = ConstParams.BaseDrag;
+        }
+
+        Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
+        m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
+
+        if (i_Jump)
+        {
+            m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
         }
     }
     
