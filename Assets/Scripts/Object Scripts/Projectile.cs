@@ -29,36 +29,34 @@ public class Projectile : NetworkBehaviour
         StopAllCoroutines();
     }
 
+    [ServerCallback]
     void OnTriggerEnter(Collider i_Other)
     {
-        //TODO: optimize, too many get component calls
-        if (isServer)
+        if (i_Other.tag == ConstParams.PlayerTag)
         {
-            if (i_Other.tag == ConstParams.PlayerTag)
+            PlayerScript player = i_Other.GetComponent<PlayerScript>();
+            bool slowEffectFound = false;
+            Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
+            PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
+
+            player.CmdDealDamage(k_ProjectileDamage);
+
+            foreach (StatusEffect effect in playerControls.ActiveEffects)
             {
-                PlayerScript player = i_Other.GetComponent<PlayerScript>();
-                player.CmdDealDamage(k_ProjectileDamage);
-                bool slowEffectFound = false;
-                Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
-                PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
-                
-                foreach (StatusEffect effect in playerControls.ActiveEffects)
+                if (effect is SlowEffect)
                 {
-                    if (effect is SlowEffect)
-                    {
-                        slowEffectFound = true;
-                        effect.ActivateEffect(otherRigidBody);
-                        break;
-                    }
+                    slowEffectFound = true;
+                    effect.ActivateEffect(otherRigidBody);
+                    break;
                 }
+            }
 
-                if (!slowEffectFound)
-                {
-                    SlowEffect slowEffect = new SlowEffect();
+            if (!slowEffectFound)
+            {
+                SlowEffect slowEffect = new SlowEffect();
 
-                    playerControls.ActiveEffects.Add(slowEffect);
-                    slowEffect.ActivateEffect(otherRigidBody);
-                }
+                playerControls.ActiveEffects.Add(slowEffect);
+                slowEffect.ActivateEffect(otherRigidBody);
             }
         }
     }

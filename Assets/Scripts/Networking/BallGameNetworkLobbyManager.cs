@@ -12,7 +12,7 @@ public class BallGameNetworkLobbyManager : NetworkLobbyManager {
     /// <summary>
     /// Requests the server to assign client an ID
     /// </summary>
-    public static void CmdRequestID(int i_NetID, PlayerScript i_RequestingPlayer)
+    public static void RequestIDFromServer(int i_NetID, PlayerScript i_RequestingPlayer)
     {
         int connectionID = i_RequestingPlayer.connectionToClient.connectionId;
         int assignedID = m_ConnectionIDToLocalID[connectionID];

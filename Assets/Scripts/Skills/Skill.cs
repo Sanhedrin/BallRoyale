@@ -37,9 +37,10 @@ public abstract class Skill : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcAttachSkill(GameObject i_Player)
+    private void RpcAttachSkill(NetworkInstanceId i_PlayerID)
     {
-        transform.SetParent(i_Player.transform);
+        GameObject player = ClientScene.FindLocalObject(i_PlayerID);
+        transform.SetParent(player.transform);
         m_PlayerObject = transform.root.GetComponentInChildren<PlayerControls>();
         m_AttachedToPlayer = true;
         m_Collider.enabled = false;
@@ -71,15 +72,13 @@ public abstract class Skill : NetworkBehaviour
         RpcDetachSkill();
     }
 
+    [ServerCallback]
     private void OnTriggerEnter(Collider i_Collider)
     {
-        if (isServer)
+        if (!m_AttachedToPlayer)
         {
-            if (!m_AttachedToPlayer)
-            {
-                RpcAttachSkill(i_Collider.gameObject);
-                StartCoroutine(skillUpTime(m_DurationInSeconds));
-            }
+            RpcAttachSkill(i_Collider.NetID());
+            StartCoroutine(skillUpTime(m_DurationInSeconds));
         }
     }
 }

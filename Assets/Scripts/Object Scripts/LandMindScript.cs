@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class LandMindScript : Obstical {
+public class LandMindScript : Obstacle {
 
     [SerializeField]
     private float m_activMinTimer = 1f;
@@ -21,28 +21,25 @@ public class LandMindScript : Obstical {
 
     protected override void OnEnable()
     {
-        Debug.Log("onEnable6666");
         if (m_Renderer && m_Collider)
         {
-            Debug.Log("onEnable");
             m_Renderer.enabled = true;
             m_Collider.enabled = false;
         }
+
         StartCoroutine(ActivatMin(m_activMinTimer, m_LifeTime));
     }
 
     [Server]
     IEnumerator ActivatMin(float i_activMinTimer, float i_DestroyTimer)
     {
-        if (isServer)
-        {
-            Debug.Log(i_activMinTimer + " " + i_DestroyTimer);
-            yield return new WaitForSeconds(i_activMinTimer);
-            m_Renderer.enabled = false;
-            m_Collider.enabled = true;
-            yield return new WaitForSeconds(i_DestroyTimer);
-            gameObject.SetActive(false);
-        }
+        yield return new WaitForSeconds(i_activMinTimer);
 
+        m_Renderer.enabled = false;
+        m_Collider.enabled = true;
+
+        yield return new WaitForSeconds(i_DestroyTimer);
+
+        gameObject.SetActive(false);
     }
 }

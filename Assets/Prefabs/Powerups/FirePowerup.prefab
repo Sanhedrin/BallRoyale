@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec52a01cb3c1542459196361e4512c89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DurationInSeconds: 1111
+  m_DurationInSeconds: 3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -132,7 +132,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_DurationInSeconds
-      value: 1111
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

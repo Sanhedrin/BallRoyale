@@ -84,7 +84,7 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     public void CmdRequestID()
     {
-        BallGameNetworkManager.CmdRequestID((int)netId.Value, this);
+        BallGameNetworkManager.RequestIDFromServer((int)netId.Value, this);
     }
 
     [ClientRpc]
@@ -136,13 +136,10 @@ public class PlayerScript : NetworkBehaviour
     [Server]
     private IEnumerator serverPushPlayer(GameObject i_PushedPlayer)
     {
-        if (isServer)
-        {
-            yield return null;
-            yield return null;
-            PlayerScript pushedPlayer = i_PushedPlayer.GetComponent<PlayerScript>();
-            pushedPlayer.m_Rigidbody.velocity *= (1 + (float)pushedPlayer.m_Health / (float)PlayerScript.k_HealthKnockbackStep);
-        }
+        yield return null;
+        yield return null;
+        PlayerScript pushedPlayer = i_PushedPlayer.GetComponent<PlayerScript>();
+        pushedPlayer.m_Rigidbody.velocity *= (1 + (float)pushedPlayer.m_Health / (float)PlayerScript.k_HealthKnockbackStep);
     }
 
     /// <summary>
@@ -180,22 +177,23 @@ public class PlayerScript : NetworkBehaviour
 
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
     //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
+    [ServerCallback]
     void OnCollisionEnter(Collision i_CollisionInfo)
     {
-        if (isServer)
+        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.KillBoxLayer))
         {
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.KillBoxLayer))
+            serverRespawnPlayer();
+        }
+
+        if (i_CollisionInfo.gameObject.CompareTag(ConstParams.PlayerTag))
+        {
+            StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
+
+            int baseDamage = (int)(i_CollisionInfo.relativeVelocity.sqrMagnitude - i_CollisionInfo.collider.GetComponent<Rigidbody>().velocity.sqrMagnitude);
+            baseDamage /= k_DamageReduction;
+
+            if (baseDamage > 0)
             {
-                serverRespawnPlayer();
-            }
-
-            if (i_CollisionInfo.gameObject.CompareTag(ConstParams.PlayerTag))
-            {
-                StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
-
-                int baseDamage = (int)(i_CollisionInfo.relativeVelocity.sqrMagnitude - i_CollisionInfo.collider.GetComponent<Rigidbody>().velocity.sqrMagnitude);
-                baseDamage /= k_DamageReduction;
-
                 CmdDealDamage(baseDamage);
             }
         }
@@ -204,6 +202,6 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     public void CmdDealDamage(int i_BaseDamage)
     {
-        m_Health += i_BaseDamage < 0 ? 0 : i_BaseDamage;
+        m_Health += i_BaseDamage;
     }
 }

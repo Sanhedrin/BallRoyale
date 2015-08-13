@@ -5,6 +5,27 @@ using UnityEngine.Networking;
 using Assets.Scripts.Player_Scripts;
 using System;
 
+public struct ControlCommandsCollection
+{
+    public float HorizontalMovement { get; set; }
+    public float VerticalMovement { get; set; }
+    public bool Jump { get; set; }
+    public bool Break { get; set; }
+
+    public bool IsNewInput
+    {
+        get
+        {
+            return !this.Equals(default(ControlCommandsCollection));
+        }
+    }
+
+    public override string ToString()
+    {
+        return string.Format("{0}, {1}, {2}, {3}", HorizontalMovement, VerticalMovement, Jump, Break);
+    }
+}
+
 /// <summary>
 /// Manages player input and their effect.
 /// </summary>
@@ -27,6 +48,25 @@ public class PlayerControls : NetworkBehaviour
 
     public List<StatusEffect> ActiveEffects { get; private set; }
 
+    public bool IsStunned
+    {
+        get
+        {
+            bool stunActive = false;
+
+            foreach (StatusEffect effect in ActiveEffects)
+            {
+                if (effect is StunEffect)
+                {
+                    stunActive = true;
+                    break;
+                }
+            }
+
+            return stunActive;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -36,70 +76,31 @@ public class PlayerControls : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (isLocalPlayer && !stunEffectActive())
+        if (isLocalPlayer && !IsStunned)
         {
             //Query for the current state of relevent movement axes: (returns values from -1 to +1)
-            float moveHorizontal = Input.GetAxis(ConstParams.HorizontalAxis);
-            float moveVertical = Input.GetAxis(ConstParams.VerticalAxis);
-            bool jump = Input.GetButtonDown(ConstParams.JumpButton) && m_Grounded;
-            bool breakButton = Input.GetButton(ConstParams.BreakButton) && m_Grounded;
+            ControlCommandsCollection controlInput = new ControlCommandsCollection()
+            {
+                HorizontalMovement = Input.GetAxis(ConstParams.HorizontalAxis),
+                VerticalMovement = Input.GetAxis(ConstParams.VerticalAxis),
+                Jump = Input.GetButtonDown(ConstParams.JumpButton) && m_Grounded,
+                Break = Input.GetButton(ConstParams.BreakButton) && m_Grounded
+            };
 
-            CmdMovementManagement(moveHorizontal, moveVertical, jump, breakButton);
+            if (controlInput.IsNewInput)
+            {
+                CmdMovementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
+            }
+
             if (!isServer)
             {
-                movementManagement(moveHorizontal, moveVertical, jump, breakButton);
+                //movementManagement(moveHorizontal, moveVertical, jump, breakButton);
             }
         }
     }
 
-    private bool stunEffectActive()
-    {
-        bool stunActive = false;
-
-        foreach (StatusEffect effect in ActiveEffects)
-        {
-            if (effect is StunEffect)
-            {
-                stunActive = true;
-                break;
-            }
-        }
-
-        return stunActive;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        effectTerminationCheckUp();
-    }
-
-    private void effectTerminationCheckUp()
-    {
-        foreach (StatusEffect effect in ActiveEffects)
-        {
-            TimeSpan timePassed = DateTime.Now - effect.LastStarted;
-            if (timePassed.TotalSeconds >= (double)effect.EffectTime)
-            {
-                ActiveEffects.Remove(effect);
-                effect.RevertEffect(m_Rigidbody);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Applies the movement on the server, which will then sync through the networkID to all the clients.
-    /// </summary>
-    /// <param name="i_Horizontal">Amount of horizontal movement.</param>
-    /// <param name="i_Vertical">Amount of vertical movement.</param>
-    /// <param name="i_Jump">Indicates if the player should jump.</param>
     [Command]
     private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
-    {
-        movementManagement(i_Horizontal, i_Vertical, i_Jump, i_BreakButton);
-    }
-
-    private void movementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
         Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
         m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
@@ -118,30 +119,49 @@ public class PlayerControls : NetworkBehaviour
             m_Rigidbody.drag = ConstParams.BaseDrag;
         }
     }
-
-    //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
-    //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
-    void OnCollisionEnter(Collision i_CollisionInfo)
+    
+    // Update is called once per frame
+    void Update()
     {
         if (isServer)
         {
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.FloorLayer))
+            effectTerminationCheckUp();
+        }
+    }
+
+    [Server]
+    private void effectTerminationCheckUp()
+    {
+        foreach (StatusEffect effect in ActiveEffects)
+        {
+            TimeSpan timePassed = DateTime.Now - effect.LastStarted;
+            if (timePassed.TotalSeconds >= (double)effect.EffectTime)
             {
-                m_Grounded = true;
+                ActiveEffects.Remove(effect);
+                effect.RevertEffect(m_Rigidbody);
             }
         }
     }
 
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
     //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
+    [ServerCallback]
+    void OnCollisionEnter(Collision i_CollisionInfo)
+    {
+        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.FloorLayer))
+        {
+            m_Grounded = true;
+        }
+    }
+
+    //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in
+    //checking for collision on the client, when the server already deals with it and nullifies client movement upon collision checks
+    [ServerCallback]
     void OnCollisionExit(Collision i_CollisionInfo)
     {
-        if (isServer)
+        if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.FloorLayer))
         {
-            if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.FloorLayer))
-            {
-                m_Grounded = false;
-            }
+            m_Grounded = false;
         }
     }
 
