@@ -20,4 +20,9 @@ public static class ExtensionMethods {
 
         return netId;
     }
+
+    public static bool IsEmpty(this ICollection i_Collection)
+    {
+        return i_Collection.Count == 0;
+    }
 }
