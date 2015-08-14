@@ -20,12 +20,13 @@ public static class ConstParams
     public const float BaseDrag = 0.35f;
 
     public const int MaxEffectCount = 5;
+
+    public const float NetTransformSyncRate = 25; //Messages per second
 }
 
 public enum eObjectPoolNames
 {
     Bullet = 0,
     PowerupItem,
-    Player
 }
 

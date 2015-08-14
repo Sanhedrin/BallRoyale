@@ -90,6 +90,11 @@ public class PlayerControls : NetworkBehaviour
 
             if (controlInput.IsNewInput)
             {
+                if (!isServer)
+                {
+                    //movementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
+                }
+
                 CmdMovementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
             }
         }
@@ -97,6 +102,12 @@ public class PlayerControls : NetworkBehaviour
 
     [Command]
     private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    {
+        movementManagement(i_Horizontal, i_Vertical, i_Jump, i_BreakButton);
+    }
+
+    [Client]
+    private void movementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
         if (i_BreakButton)
         {
