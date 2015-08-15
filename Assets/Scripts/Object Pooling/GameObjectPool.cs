@@ -25,12 +25,14 @@ public class GameObjectPool
         }
     }
 
-    private void addToPool()
+    private GameObject addToPool()
     {
         GameObject newGameobj = GameObject.Instantiate(m_PoolObj, new Vector3(-1337, -1337, -1337), Quaternion.identity) as GameObject;
         newGameobj.SetActive(false);
         m_GameObjectList.Add(newGameobj);
         NetworkServer.Spawn(newGameobj);
+
+        return newGameobj;
     }
 
     public GameObject PullObject()
@@ -40,7 +42,6 @@ public class GameObjectPool
         {
             if (!obj.activeInHierarchy)
             {
-                obj.SetActive(true);
                 objToPull = obj;
                 break;
             }
@@ -48,9 +49,10 @@ public class GameObjectPool
 
         if (objToPull == null)
         {
-            addToPool();
-            objToPull = m_GameObjectList[Random.Range(0, m_GameObjectList.Count - 1)];
+            objToPull = addToPool();
         }
+
+        objToPull.SetActive(true);
 
         return objToPull; 
     }
