@@ -6,7 +6,7 @@ using System;
 [AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
 public class Projectile : Obstacle
 {
-   
+    private const int k_ProjectileDamage = 100;
     
     void OnEnable()
     {
@@ -36,28 +36,10 @@ public class Projectile : Obstacle
             PlayerScript player = i_Other.GetComponent<PlayerScript>();
             Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
-            bool slowEffectFound = false;
 
-            player.CmdDealDamage(k_DamageToPlyer);
+            player.CmdDealDamage(k_ProjectileDamage);
 
-            foreach (StatusEffect effect in playerControls.ActiveEffects)
-            {
-                if (effect is SlowEffect)
-                {
-                    slowEffectFound = true;
-                    effect.ActivateEffect(otherRigidBody);
-                    break;
-                }
-            }
-
-            if (!slowEffectFound)
-            {
-                SlowEffect slowEffect = new SlowEffect();
-
-                playerControls.ActiveEffects.Add(slowEffect);
-                slowEffect.ActivateEffect(otherRigidBody);
-            }
-            RpcActivetObstical(false);
+            playerControls.RpcAddSlowEffect();
         }
     }
 }
