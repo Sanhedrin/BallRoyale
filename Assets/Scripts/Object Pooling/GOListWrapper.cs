@@ -6,7 +6,6 @@ using System;
 [Serializable]
 public class GOListWrapper
 {
-
     public List<GameObject> InnerList = new List<GameObject>();
 
     public GOListWrapper()

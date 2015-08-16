@@ -21,7 +21,7 @@ public static class ConstParams
 
     public const int MaxEffectCount = 5;
 
-    public const float NetTransformSyncRate = 25; //Messages per second
+    public const float NetTransformSyncRate = 1; //Messages per second
 }
 
 public enum eObjectPoolNames
