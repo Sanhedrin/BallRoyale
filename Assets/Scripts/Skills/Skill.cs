@@ -44,8 +44,10 @@ public abstract class Skill : NetworkBehaviour
         m_PlayerObject = transform.root.GetComponentInChildren<PlayerControls>();
         m_AttachedToPlayer = true;
         m_Collider.enabled = false;
-        m_Renderer.enabled = false;
-      
+        //m_Renderer.enabled = false;
+
+        transform.FindChild(ConstParams.BoxPrefab).gameObject.SetActive(false);
+
         OnAttachedToPlayer();
     }
 
