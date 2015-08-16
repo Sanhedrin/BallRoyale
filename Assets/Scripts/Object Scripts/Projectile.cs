@@ -35,7 +35,7 @@ public class Projectile : NetworkBehaviour
         if (i_Other.tag == ConstParams.PlayerTag)
         {
             PlayerScript player = i_Other.GetComponent<PlayerScript>();
-            Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
+            Rigidbody playerRigidBody = i_Other.GetComponent<Rigidbody>();
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
             bool slowEffectFound = false;
 
@@ -46,7 +46,7 @@ public class Projectile : NetworkBehaviour
                 if (effect is SlowEffect)
                 {
                     slowEffectFound = true;
-                    effect.ActivateEffect(otherRigidBody);
+                    effect.ActivateEffect(playerRigidBody);
                     break;
                 }
             }
@@ -56,7 +56,7 @@ public class Projectile : NetworkBehaviour
                 SlowEffect slowEffect = new SlowEffect();
 
                 playerControls.ActiveEffects.Add(slowEffect);
-                slowEffect.ActivateEffect(otherRigidBody);
+                slowEffect.ActivateEffect(playerRigidBody);
             }
         }
     }
