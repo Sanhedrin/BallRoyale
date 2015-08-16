@@ -183,4 +183,28 @@ public class PlayerControls : NetworkBehaviour
     {
         GetComponentInChildren<Skill>().Activate();
     }
+
+    [ClientRpc]
+    public void RpcAddSlowEffect()
+    {
+        bool slowEffectFound = false;        
+
+        foreach (StatusEffect effect in ActiveEffects)
+        {
+            if (effect is SlowEffect)
+            {
+                slowEffectFound = true;
+                effect.ActivateEffect(m_Rigidbody);
+                break;
+            }
+        }
+
+        if (!slowEffectFound)
+        {
+            SlowEffect slowEffect = new SlowEffect();
+
+            ActiveEffects.Add(slowEffect);
+            slowEffect.ActivateEffect(m_Rigidbody);
+        }
+    }
 }

@@ -37,27 +37,9 @@ public class Projectile : NetworkBehaviour
             PlayerScript player = i_Other.GetComponent<PlayerScript>();
             Rigidbody playerRigidBody = i_Other.GetComponent<Rigidbody>();
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
-            bool slowEffectFound = false;
 
             player.CmdDealDamage(k_ProjectileDamage);
-
-            foreach (StatusEffect effect in playerControls.ActiveEffects)
-            {
-                if (effect is SlowEffect)
-                {
-                    slowEffectFound = true;
-                    effect.ActivateEffect(playerRigidBody);
-                    break;
-                }
-            }
-
-            if (!slowEffectFound)
-            {
-                SlowEffect slowEffect = new SlowEffect();
-
-                playerControls.ActiveEffects.Add(slowEffect);
-                slowEffect.ActivateEffect(playerRigidBody);
-            }
+            playerControls.RpcAddSlowEffect();
         }
     }
 }
