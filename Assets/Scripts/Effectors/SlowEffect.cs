@@ -4,22 +4,22 @@ using System;
 
 public class SlowEffect : StatusEffect
 {
-    private const int k_AddedDrag = 10000;
-    private const int k_SlowTime = 2;
+    private const float k_AddedDrag = 10000.0f;
+    private const int k_SlowTime = 5;
 
     public SlowEffect()
     {
         m_EffectTime = k_SlowTime;
     }
 
-    public override void ActivateEffect(Rigidbody i_EffectedRigidBody)
+    public override void Activate(PlayerControls i_PlayerControls)
     {
-        m_LastStarted = DateTime.Now;
-        i_EffectedRigidBody.drag += k_AddedDrag;
+        RefreshTimer();
+        i_PlayerControls.MoveSpeed = ConstParams.SlowedMoveSpeed;
     }
 
-    public override void RevertEffect(Rigidbody i_EffectedRigidBody)
+    public override void Deactivate(PlayerControls i_PlayerControls)
     {
-        i_EffectedRigidBody.drag -= k_AddedDrag;
+        i_PlayerControls.MoveSpeed = ConstParams.BaseMoveSpeed;
     }
 }

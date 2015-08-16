@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public abstract class StatusEffect 
+public abstract class StatusEffect
 {
     //Set Activation time in inheriting effect
     protected int m_EffectTime = 0;
@@ -23,6 +23,11 @@ public abstract class StatusEffect
         }
     }
 
-    public abstract void ActivateEffect(Rigidbody i_EffectedRigidBody);
-    public abstract void RevertEffect(Rigidbody i_EffectedRigidBody);
+    public abstract void Activate(PlayerControls i_PlayerControls);
+    public abstract void Deactivate(PlayerControls i_PlayerControls);
+
+    public void RefreshTimer()
+    {
+        m_LastStarted = DateTime.Now;
+    }
 }

@@ -39,10 +39,10 @@ public class PlayerControls : NetworkBehaviour
 
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
-    public Rigidbody m_Rigidbody;
+    public Rigidbody Rigidbody { get; set; }
 
     [SerializeField]
-    private float m_MoveSpeed = 20;
+    public float MoveSpeed { get; set; }
 
     [SerializeField]
     private float m_JumpSpeed = 350;
@@ -72,7 +72,8 @@ public class PlayerControls : NetworkBehaviour
     void Start()
     {
         ActiveEffects = new List<StatusEffect>();
-        m_Rigidbody = GetComponent<Rigidbody>();
+        Rigidbody = GetComponent<Rigidbody>();
+        MoveSpeed = ConstParams.BaseMoveSpeed;
     }
 
     void FixedUpdate()
@@ -111,19 +112,19 @@ public class PlayerControls : NetworkBehaviour
     {
         if (i_BreakButton)
         {
-            m_Rigidbody.drag = ConstParams.BreakDrag;
+            Rigidbody.drag = ConstParams.BreakDrag;
         }
         else
         {
-            m_Rigidbody.drag = ConstParams.BaseDrag;
+            Rigidbody.drag = ConstParams.BaseDrag;
         }
 
         Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
-        m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
+        Rigidbody.AddForce(movement * MoveSpeed * Rigidbody.mass);
 
         if (i_Jump)
         {
-            m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
+            Rigidbody.AddForce(Vector3.up * m_JumpSpeed * Rigidbody.mass);
         }
     }
     
@@ -145,7 +146,7 @@ public class PlayerControls : NetworkBehaviour
             if (timePassed.TotalSeconds >= (double)effect.EffectTime)
             {
                 ActiveEffects.Remove(effect);
-                effect.RevertEffect(m_Rigidbody);
+                effect.Deactivate(this);
             }
         }
     }
@@ -188,13 +189,13 @@ public class PlayerControls : NetworkBehaviour
     public void RpcAddSlowEffect()
     {
         bool slowEffectFound = false;
-        Debug.Log("AddedDrag");
+        
         foreach (StatusEffect effect in ActiveEffects)
         {
             if (effect is SlowEffect)
             {
                 slowEffectFound = true;
-                effect.ActivateEffect(m_Rigidbody);
+                effect.RefreshTimer();
                 break;
             }
         }
@@ -204,7 +205,7 @@ public class PlayerControls : NetworkBehaviour
             SlowEffect slowEffect = new SlowEffect();
 
             ActiveEffects.Add(slowEffect);
-            slowEffect.ActivateEffect(m_Rigidbody);
+            slowEffect.Activate(this);
         }
     }
 }
