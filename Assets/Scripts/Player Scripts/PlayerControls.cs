@@ -187,8 +187,8 @@ public class PlayerControls : NetworkBehaviour
     [ClientRpc]
     public void RpcAddSlowEffect()
     {
-        bool slowEffectFound = false;        
-
+        bool slowEffectFound = false;
+        Debug.Log("AddedDrag");
         foreach (StatusEffect effect in ActiveEffects)
         {
             if (effect is SlowEffect)

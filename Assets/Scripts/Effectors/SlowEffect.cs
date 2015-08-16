@@ -16,7 +16,6 @@ public class SlowEffect : StatusEffect
     {
         m_LastStarted = DateTime.Now;
         i_EffectedRigidBody.drag += k_AddedDrag;
-        Debug.Log("AddedDrag");
     }
 
     public override void RevertEffect(Rigidbody i_EffectedRigidBody)
