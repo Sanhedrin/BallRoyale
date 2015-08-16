@@ -26,7 +26,8 @@ public static class ConstParams
 
 public enum eObjectPoolNames
 {
-    Bullet = 0,
+    Bullet = 0,   
     PowerupItem,
+    LandMide,
 }
 

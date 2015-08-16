@@ -81,4 +81,10 @@ public abstract class Skill : NetworkBehaviour
             StartCoroutine(skillUpTime(m_DurationInSeconds));
         }
     }
+
+    [ClientRpc]
+    protected void RpcActivateObject(NetworkInstanceId i_GameObjectID, bool i_Activate)
+    {
+        ClientScene.FindLocalObject(i_GameObjectID).SetActive(i_Activate);
+    }
 }
