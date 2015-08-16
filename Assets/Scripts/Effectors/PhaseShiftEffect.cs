@@ -13,12 +13,15 @@ public class PhaseShiftEffect : StatusEffect
         {
             render.enabled = false;
         }
+
+        i_EffectedRigidBody.gameObject.layer = LayerMask.NameToLayer(ConstParams.PhasedLayer);
     }
 
     public override void RevertEffect(Rigidbody i_EffectedRigidBody)
     {
         Renderer render = i_EffectedRigidBody.GetComponent<Renderer>();
         render.enabled = true;
+        i_EffectedRigidBody.gameObject.layer = LayerMask.NameToLayer(ConstParams.PlayerLayer);
     }
 }
 
