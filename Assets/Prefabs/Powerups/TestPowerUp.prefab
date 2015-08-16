@@ -83,23 +83,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 184808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 031a867e67d1d604c9ca73284fc98565, type: 3}
+  m_Script: {fileID: 11500000, guid: 50b507d904c3f434384ace99972e6bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AutoRepaintOnSceneChange: 0
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: 506c6179657250726566735265736574
-    m_Image: {fileID: 0}
-    m_Tooltip: 
-  m_DepthBufferBits: 0
-  m_AntiAlias: 0
-  m_Pos:
-    x: 0
-    y: 0
-    width: 320
-    height: 240
+  m_DurationInSeconds: 1e+07
+  m_PhaseShiftDuration: 10
 --- !u!114 &11426150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -138,7 +126,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_DurationInSeconds
+      value: 1e+07
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_PhaseShiftDuration
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 184808}
