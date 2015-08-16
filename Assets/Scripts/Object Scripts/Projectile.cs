@@ -35,9 +35,9 @@ public class Projectile : NetworkBehaviour
         if (i_Other.tag == ConstParams.PlayerTag)
         {
             PlayerScript player = i_Other.GetComponent<PlayerScript>();
-            bool slowEffectFound = false;
             Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
+            bool slowEffectFound = false;
 
             player.CmdDealDamage(k_ProjectileDamage);
 
