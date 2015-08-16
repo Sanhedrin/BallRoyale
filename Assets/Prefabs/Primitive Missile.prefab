@@ -91,9 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 232e64b01eb54014c9106ae317b10430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LifeTime: 2
-  m_ExplosionForce: 3000
-  m_ExplosionRadius: 1000
 --- !u!114 &11494162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -106,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 1
+  m_SendInterval: .0344827585
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -195,7 +192,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_SendInterval
-      value: 1
+      value: .0344827585
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_TransformSyncMode

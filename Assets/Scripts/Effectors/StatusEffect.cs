@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public abstract class StatusEffect
+public abstract class StatusEffect 
 {
     //Set Activation time in inheriting effect
     protected int m_EffectTime = 0;
