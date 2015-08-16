@@ -3,26 +3,18 @@ using System.Collections;
 using UnityEngine.Networking;
 
 //[AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
-public class Obstacle : NetworkBehaviour
+public abstract class Obstacle : NetworkBehaviour
 {
-    private Rigidbody m_OtherRigidBody;
+    protected Rigidbody m_OtherRigidBody;
     
     [SerializeField]
     protected float m_LifeTime = 2f;
+    [SerializeField]
+    protected int k_DamageToPlyer = 100;
 
     protected virtual void OnEnable()
     {
-        if (isServer)
-        {
-            StartCoroutine(DestroyObstacle(m_LifeTime));
-        }
-    }
 
-    [Server]
-    IEnumerator DestroyObstacle(float i_StartIn)
-    {
-        yield return new WaitForSeconds(i_StartIn);
-        gameObject.SetActive(false);
     }
 
     void OnDisable()
@@ -30,15 +22,10 @@ public class Obstacle : NetworkBehaviour
         StopAllCoroutines();
     }
 
-    [ServerCallback]
-    void OnTriggerEnter(Collider i_Other)
+    [ClientRpc]
+    protected void RpcActivetObstical(bool i_Activet)
     {
-        if (i_Other.tag == ConstParams.PlayerTag)
-        {
-            m_OtherRigidBody = i_Other.GetComponent<Rigidbody>();
-
-            m_OtherRigidBody.AddForce(Vector3.up * 2000);
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(i_Activet);
     }
+
 }

@@ -68,7 +68,6 @@ public class PlayerScript : NetworkBehaviour
             OnIDAssigned(new IDEventArgs(m_ConnectionID));
         }
 
-
         Random.seed = System.DateTime.Now.Millisecond;
 	}
 	

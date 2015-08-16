@@ -4,11 +4,10 @@ using UnityEngine.Networking;
 using System;
 
 [AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
-public class Projectile : NetworkBehaviour
+public class Projectile : Obstacle
 {
-    private float m_LifeTime = 2f;
-    const int k_ProjectileDamage = 100;
-
+   
+    
     void OnEnable()
     {
         if (isServer)
@@ -21,7 +20,7 @@ public class Projectile : NetworkBehaviour
     IEnumerator DestroyProjectile(float i_StartIn)
     {
         yield return new WaitForSeconds(i_StartIn);
-        gameObject.SetActive(false);
+        RpcActivetObstical(false);
     }
 
     void OnDisable()
@@ -35,11 +34,30 @@ public class Projectile : NetworkBehaviour
         if (i_Other.tag == ConstParams.PlayerTag)
         {
             PlayerScript player = i_Other.GetComponent<PlayerScript>();
-            Rigidbody playerRigidBody = i_Other.GetComponent<Rigidbody>();
+            Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
+            bool slowEffectFound = false;
 
-            player.CmdDealDamage(k_ProjectileDamage);
-            playerControls.RpcAddSlowEffect();
+            player.CmdDealDamage(k_DamageToPlyer);
+
+            foreach (StatusEffect effect in playerControls.ActiveEffects)
+            {
+                if (effect is SlowEffect)
+                {
+                    slowEffectFound = true;
+                    effect.ActivateEffect(otherRigidBody);
+                    break;
+                }
+            }
+
+            if (!slowEffectFound)
+            {
+                SlowEffect slowEffect = new SlowEffect();
+
+                playerControls.ActiveEffects.Add(slowEffect);
+                slowEffect.ActivateEffect(otherRigidBody);
+            }
+            RpcActivetObstical(false);
         }
     }
 }

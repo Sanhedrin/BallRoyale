@@ -44,8 +44,10 @@ public abstract class Skill : NetworkBehaviour
         m_PlayerObject = transform.root.GetComponentInChildren<PlayerControls>();
         m_AttachedToPlayer = true;
         m_Collider.enabled = false;
-        m_Renderer.enabled = false;
-      
+        //m_Renderer.enabled = false;
+
+        transform.FindChild(ConstParams.BoxPrefab).gameObject.SetActive(false);
+
         OnAttachedToPlayer();
     }
 
@@ -80,5 +82,11 @@ public abstract class Skill : NetworkBehaviour
             RpcAttachSkill(i_Collider.NetID());
             StartCoroutine(skillUpTime(m_DurationInSeconds));
         }
+    }
+
+    [ClientRpc]
+    protected void RpcActivateObject(NetworkInstanceId i_GameObjectID, bool i_Activate)
+    {
+        ClientScene.FindLocalObject(i_GameObjectID).SetActive(i_Activate);
     }
 }

@@ -13,11 +13,14 @@ public static class ConstParams
     public const string BreakButton = "Break";
     public const string PlayerLayer = "PlayerLayer";
     public const string PhasedLayer = "Phased";
+    public const string BoxPrefab = "BoxPrefab";
 
     public const string ObjectPoolManager = "ObjectPoolManager";
 
     public const float BreakDrag = 2f;
     public const float BaseDrag = 0.35f;
+    public const float BaseMoveSpeed = 20f;
+    public const float SlowedMoveSpeed = 5f;
 
     public const int MaxEffectCount = 5;
 
@@ -26,7 +29,8 @@ public static class ConstParams
 
 public enum eObjectPoolNames
 {
-    Bullet = 0,
+    Bullet = 0,   
     PowerupItem,
+    LandMide,
 }
 
