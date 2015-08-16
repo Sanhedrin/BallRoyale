@@ -721,7 +721,7 @@ Prefab:
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[1].InnerList.Array.data[0]
       value: 
-      objectReference: {fileID: 133536, guid: 3f75167d734daeb4cb8dacf0f5a6cac5, type: 2}
+      objectReference: {fileID: 150462, guid: dd8f853316815c54fa852bc7b00362e3, type: 2}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectPoolStartAmounts.Array.data[0].InnerList.Array.data[0]
       value: 10
@@ -777,7 +777,7 @@ Prefab:
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[1].InnerList.Array.data[1]
       value: 
-      objectReference: {fileID: 133536, guid: 3f75167d734daeb4cb8dacf0f5a6cac5, type: 2}
+      objectReference: {fileID: 150462, guid: dd8f853316815c54fa852bc7b00362e3, type: 2}
     - target: {fileID: 11456268, guid: fa004bcb986373a459cc4a50f48a6aae, type: 2}
       propertyPath: ObjectsToPool.Array.data[2].InnerList.Array.data[0]
       value: 

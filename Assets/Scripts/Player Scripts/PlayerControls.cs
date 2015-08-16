@@ -35,7 +35,12 @@ public struct ControlCommandsCollection
 public class PlayerControls : NetworkBehaviour
 {
     [SyncVar]
-    private bool m_Grounded = false;
+    private bool m_Grounded;
+
+    public bool Grounded
+    {
+        get { return m_Grounded; }
+    }
 
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
