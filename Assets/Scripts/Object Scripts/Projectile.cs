@@ -5,9 +5,7 @@ using System;
 
 [AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
 public class Projectile : Obstacle
-{
-    private const int k_ProjectileDamage = 100;
-    
+{   
     void OnEnable()
     {
         if (isServer)
@@ -23,11 +21,6 @@ public class Projectile : Obstacle
         RpcActivetObstical(false);
     }
 
-    void OnDisable()
-    {
-        StopAllCoroutines();
-    }
-
     [ServerCallback]
     void OnTriggerEnter(Collider i_Other)
     {
@@ -37,9 +30,11 @@ public class Projectile : Obstacle
             Rigidbody otherRigidBody = i_Other.GetComponent<Rigidbody>();
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
 
-            player.CmdDealDamage(k_ProjectileDamage);
+            player.CmdDealDamage(k_DamageToPlyer);
 
             playerControls.RpcAddSlowEffect();
+
+            RpcActivetObstical(false);
         }
     }
 }

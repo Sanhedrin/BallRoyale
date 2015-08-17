@@ -37,10 +37,7 @@ public class PlayerControls : NetworkBehaviour
     [SyncVar]
     private bool m_Grounded;
 
-    public bool Grounded
-    {
-        get { return m_Grounded; }
-    }
+    public bool Grounded { get { return m_Grounded; } }
 
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
@@ -83,15 +80,15 @@ public class PlayerControls : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (isLocalPlayer && !IsStunned)
+        if (isLocalPlayer && !IsStunned && m_Grounded)
         {
             //Query for the current state of relevent movement axes: (returns values from -1 to +1)
             ControlCommandsCollection controlInput = new ControlCommandsCollection()
             {
                 HorizontalMovement = Input.GetAxis(ConstParams.HorizontalAxis),
                 VerticalMovement = Input.GetAxis(ConstParams.VerticalAxis),
-                Jump = Input.GetButtonDown(ConstParams.JumpButton) && m_Grounded,
-                Break = Input.GetButton(ConstParams.BreakButton) && m_Grounded
+                Jump = Input.GetButtonDown(ConstParams.JumpButton) ,
+                Break = Input.GetButton(ConstParams.BreakButton) 
             };
 
             if (controlInput.IsNewInput)
