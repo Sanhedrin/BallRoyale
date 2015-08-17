@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 [AddComponentMenu("BallGame Scripts/Skills/Phase Shift")]
 public sealed class PhaseShiftSkill : Skill
 {
-    private Renderer m_render;
+    private Renderer m_PlayerRender;
 
     private bool m_isActive = false;
 
@@ -14,12 +14,12 @@ public sealed class PhaseShiftSkill : Skill
 
     protected override void OnAttachedToPlayer()
     {
-        m_render = m_PlayerObject.GetComponent<Renderer>();            
+        m_PlayerRender = m_PlayerObject.GetComponent<Renderer>();            
     }
 
     protected override void OnDetachedFromPlayer()
     {
-        m_render.enabled = true;
+        m_PlayerRender.enabled = true;
         m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstParams.PlayerLayer);
     }
 
@@ -37,9 +37,9 @@ public sealed class PhaseShiftSkill : Skill
 
     private void enterPhaseShift()
     {
-        if (!m_render.GetComponent<PlayerScript>().isLocalPlayer) // only the local playeer can see himself
+        if (!m_PlayerObject.isLocalPlayer) // only the local playeer can see himself
         {
-            m_render.enabled = false;
+            m_PlayerRender.enabled = false;
         }
 
         m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstParams.PhasedLayer);
