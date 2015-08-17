@@ -60,6 +60,8 @@ public abstract class Skill : NetworkBehaviour
         m_AttachedToPlayer = false;
         m_Collider.enabled = true;
         //m_Renderer.enabled = true;
+  
+        StopAllCoroutines();
 
         OnDetachedFromPlayer();
         m_PlayerObject = null;
