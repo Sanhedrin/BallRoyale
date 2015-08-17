@@ -15,6 +15,7 @@ public abstract class Skill : NetworkBehaviour
     [SerializeField]
     protected float m_DurationInSeconds;
 
+
     public abstract void Activate();
     protected abstract void OnAttachedToPlayer();
     protected abstract void OnDetachedFromPlayer();
@@ -52,17 +53,16 @@ public abstract class Skill : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcDetachSkill()
+    protected void RpcDetachSkill()
     {
         transform.position = new Vector3(-1337, -1337, -1337);
         transform.SetParent(null);
-        m_PlayerObject = null;
         m_AttachedToPlayer = false;
         m_Collider.enabled = true;
-        m_Renderer.enabled = true;
+        //m_Renderer.enabled = true;
 
         OnDetachedFromPlayer();
-
+        m_PlayerObject = null;
         gameObject.SetActive(false);
     }
 

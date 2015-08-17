@@ -1560,7 +1560,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11413764, guid: c3f7a287dc8b6c841a784f8835967cf3, type: 2}
       propertyPath: m_PhaseShiftDuration
-      value: 9
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3373638, guid: c3f7a287dc8b6c841a784f8835967cf3, type: 2}

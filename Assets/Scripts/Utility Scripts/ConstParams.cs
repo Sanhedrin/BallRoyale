@@ -11,8 +11,9 @@ public static class ConstParams
     public const string JumpButton = "Jump";
     public const string FireButton = "Fire1";
     public const string BreakButton = "Break";
-    public const string PlayerLayer = "PlayerLayer";
+    public const string PlayerLayer = "Players";
     public const string PhasedLayer = "Phased";
+    public const string DifaultLayer = "Difault";
     public const string BoxPrefab = "BoxPrefab";
 
     public const string ObjectPoolManager = "ObjectPoolManager";

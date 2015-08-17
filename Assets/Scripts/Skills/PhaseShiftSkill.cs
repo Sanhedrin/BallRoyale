@@ -10,7 +10,7 @@ public sealed class PhaseShiftSkill : Skill
     private bool m_isActive = false;
 
     [SerializeField]
-    protected float m_PhaseShiftDuration;
+    private float m_PhaseShiftDuration = 4;
 
     protected override void OnAttachedToPlayer()
     {
@@ -21,9 +21,10 @@ public sealed class PhaseShiftSkill : Skill
     {
         m_PlayerRender.enabled = true;
         m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstParams.PlayerLayer);
+        Debug.Log(LayerMask.LayerToName(m_PlayerObject.gameObject.layer));
     }
 
-    [Server]
+
     public override void Activate()
     {
         if (!m_isActive)
@@ -31,11 +32,12 @@ public sealed class PhaseShiftSkill : Skill
             Debug.Log("in PhaseShift");
             m_isActive = true;
             StartCoroutine(phaseShiftTime(m_PhaseShiftDuration));
-            enterPhaseShift();
+            RpcEnterPhaseShift();
         }
     }
 
-    private void enterPhaseShift()
+    [ClientRpc]
+    private void RpcEnterPhaseShift()
     {
         if (!m_PlayerObject.isLocalPlayer) // only the local playeer can see himself
         {
@@ -43,6 +45,7 @@ public sealed class PhaseShiftSkill : Skill
         }
 
         m_PlayerObject.gameObject.layer = LayerMask.NameToLayer(ConstParams.PhasedLayer);
+        Debug.Log(LayerMask.LayerToName(m_PlayerObject.gameObject.layer));
     }
 
     [Server]
@@ -50,7 +53,7 @@ public sealed class PhaseShiftSkill : Skill
     {
         yield return new WaitForSeconds(i_Seconds);
 
-        OnDetachedFromPlayer();
+        RpcDetachSkill();
     }
 
 }
