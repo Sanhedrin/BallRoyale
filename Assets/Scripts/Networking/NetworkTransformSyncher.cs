@@ -39,7 +39,6 @@ public class NetworkTransformSyncher : NetworkBehaviour
         for (; ; )
         {
             yield return new WaitForSeconds(1 / ConstParams.NetTransformSyncRate);
-            Debug.Log("Co");
             SetDirtyBit(1);
         }
     }
@@ -52,11 +51,8 @@ public class NetworkTransformSyncher : NetworkBehaviour
         writer.Write(state.Rotation);
         writer.Write(state.StateTime);
 
-        Debug.Log("Ser");
-
         bool serialized = base.OnSerialize(writer, initialState);
-        SetDirtyBit(0);
-        return serialized;
+        return true;
     }
 
     public override void OnDeserialize(NetworkReader reader, bool initialState)
@@ -68,11 +64,7 @@ public class NetworkTransformSyncher : NetworkBehaviour
             StateTime = reader.ReadInt32()
         };
 
-        Debug.Log(state.Position);
         transform.position = state.Position;
         transform.rotation = state.Rotation;
-
-        base.OnDeserialize(reader, initialState);
-        SetDirtyBit(0);
     }
 }
