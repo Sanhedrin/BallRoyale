@@ -45,7 +45,6 @@ public class LandMineSkill : Skill {
     [Server]
     private IEnumerator coldownActivatMine(float i_Seconds)
     {
-        Debug.Log("smoke smoke !!!");
         m_coldownForlayingNextMine = false;
         yield return new WaitForSeconds(i_Seconds);
         m_coldownForlayingNextMine = true;     

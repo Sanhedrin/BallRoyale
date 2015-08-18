@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public abstract class Skill : NetworkBehaviour
 {
     protected PlayerControls m_PlayerObject;
+    protected GameObject player;
 
     private Renderer m_Renderer;
     private Collider m_Collider;
@@ -40,7 +41,7 @@ public abstract class Skill : NetworkBehaviour
     [ClientRpc]
     private void RpcAttachSkill(NetworkInstanceId i_PlayerID)
     {
-        GameObject player = ClientScene.FindLocalObject(i_PlayerID);
+        player = ClientScene.FindLocalObject(i_PlayerID);
         transform.SetParent(player.transform);
         m_PlayerObject = transform.root.GetComponentInChildren<PlayerControls>();
         m_AttachedToPlayer = true;

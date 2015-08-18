@@ -24,11 +24,17 @@ public class LandMindScript : Obstacle {
     {
         if (m_Renderer && m_Collider)
         {
-            m_Renderer.enabled = true;
-            m_Collider.enabled = false;
+            RpcShowMine(true);
         }
 
         StartCoroutine(ActivatMin(m_activMinTimer, m_LifeTime));
+    }
+    [ClientRpc]
+    private void RpcShowMine(bool i_showMine)
+    {
+        m_Renderer.enabled = i_showMine;
+        m_Collider.enabled = !i_showMine;
+
     }
 
     [Server]
@@ -36,12 +42,11 @@ public class LandMindScript : Obstacle {
     {
         yield return new WaitForSeconds(i_activMinTimer);
 
-        m_Renderer.enabled = false;
-        m_Collider.enabled = true;
+        RpcShowMine(false);
 
         yield return new WaitForSeconds(i_DestroyTimer);
 
-        RpcActivetObstical(false);
+        RpcActivateObstical(false);
     }
 
     [ServerCallback]
@@ -55,7 +60,7 @@ public class LandMindScript : Obstacle {
 
             i_Other.GetComponent<PlayerScript>().CmdDealDamage(k_DamageToPlyer); 
 
-            RpcActivetObstical(false);
+            RpcActivateObstical(false);
         }
     }
 

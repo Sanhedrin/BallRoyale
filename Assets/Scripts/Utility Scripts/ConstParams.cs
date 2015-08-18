@@ -21,7 +21,7 @@ public static class ConstParams
     public const float BreakDrag = 2f;
     public const float BaseDrag = 0.35f;
     public const float BaseMoveSpeed = 20f;
-    public const float SlowedMoveSpeed = 5f;
+    public const float SlowedMoveSpeed = 1f;
 
     public const int MaxEffectCount = 5;
 
