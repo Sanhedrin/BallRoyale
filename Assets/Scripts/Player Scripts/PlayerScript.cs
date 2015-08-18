@@ -5,8 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
-using Assets.Scripts;
-using Assets.Scripts.Player_Scripts;
 
 /// <summary>
 /// The base script for the player will manage the display and stats of the player, as well as network synchronization.

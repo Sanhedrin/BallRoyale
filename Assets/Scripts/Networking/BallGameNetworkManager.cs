@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
-using Assets.Scripts;
-using Assets.Scripts.Player_Scripts;
 
 [AddComponentMenu("BallGame Scripts/Network/Ball Game Network Manager")]
 public class BallGameNetworkManager : NetworkManager

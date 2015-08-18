@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
-using Assets.Scripts.Player_Scripts;
 using System;
 
 /// <summary>
@@ -72,7 +71,7 @@ public class PlayerControls : NetworkBehaviour
 
             if (controlInput.IsNewInput)
             {
-                if (!isServer)
+                if (!isServer && isLocalPlayer)
                 {
                     //movementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
                 }
@@ -83,7 +82,12 @@ public class PlayerControls : NetworkBehaviour
     }
 
     [Command]
-    private void CmdMovementManagement(int i_StateTime, float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    private void CmdMovementManagement(int i_StateID, float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    {
+        movementManagement(i_Horizontal, i_Vertical, i_Jump, i_BreakButton);
+    }
+
+    private void movementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
         if (i_BreakButton)
         {
@@ -102,8 +106,7 @@ public class PlayerControls : NetworkBehaviour
             m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
         }
     }
-
-    
+        
     // Update is called once per frame
     void Update()
     {

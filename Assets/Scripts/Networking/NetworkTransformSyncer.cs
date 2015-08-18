@@ -7,8 +7,9 @@ using LgOctEngine.CoreClasses;
 
 public class NetworkState : LgJsonDictionary
 {
-    public Vector3 Rotation { get { return GetValue<Vector3>("Rotation", Vector3.zero); } set { SetValue<Vector3>("Rotation", value); } }
+    public Vector3 Rotation { get { return GetValue<Vector3>("Rot", Vector3.zero); } set { SetValue<Vector3>("Rot", value); } }
     public Vector3 Position { get { return GetValue<Vector3>("Pos", Vector3.zero); } set { SetValue<Vector3>("Pos", value); } }
+    public Vector3 Scale { get { return GetValue<Vector3>("Scale", Vector3.zero); } set { SetValue<Vector3>("Scale", value); } }
     public int StateID { get { return GetValue<int>("ID", 0); } set { SetValue<int>("ID", value); } }
     public float UpdateTime = 0;
 
@@ -37,39 +38,60 @@ public class NetworkTransformSyncer : NetworkBehaviour
     private NetworkState[] m_NetworkStates = new NetworkState[20];
     private int m_LatestStateArrayIndex = 0;
     private Vector3 m_LastRecordedVelocity;
+    private Vector3 m_LastRecordedScaler;
     private Vector3 m_LastRecordedAngularVelocity;
-
     private float m_AverageTimePerSyncs = 0;
+
+    [SerializeField]
     private float m_ExtrapolationThreshold = 0.01f;
+    [SerializeField]
+    private float m_ObjectSnapThreshold = 0.5f;
+    [SerializeField]
+    private float m_PlayerSnapThreshold = 0.5f;
     
     [ServerCallback]
     private void Start()
     {
-        StartCoroutine(SyncTimer());
+        StartCoroutine(syncTimer());
     }
 
     [ClientCallback]
     private void Update()
     {
+        if (isLocalPlayer && m_Rigidbody && !m_Rigidbody.useGravity)
+        {
+            m_Rigidbody.useGravity = true;
+        }
+
         if (!isServer)
         {
             //We can't interpolate nor extrapolate yet if we haven't found 2 positions so far.
             if (m_LatestStateArrayIndex >= 2)
             {
-                //First, we'll try to interpolate between the 2 oldest known frames
+                //First, we'll try to interpolate between the 2 newest frames
 
                 //Checking how far we are between the 2 frames based on a sync rate.
-                float completePercent = (Time.time - m_NetworkStates[m_LatestStateArrayIndex - 1].UpdateTime) / m_AverageTimePerSyncs;//(1 / ConstParams.NetTransformSyncRate);
+                float completePercent = (Time.time - m_NetworkStates[m_LatestStateArrayIndex - 1].UpdateTime) / (m_AverageTimePerSyncs + 2 * Time.deltaTime);//(1 / ConstParams.NetTransformSyncRate);
 
                 //If we're still not done interpolating the current state.
                 if (completePercent <= 1)
                 {
                     Vector3 lastPos = transform.position;
                     Vector3 lastRot = transform.rotation.eulerAngles;
+                    Vector3 lastScale = transform.localScale;
 
-                    transform.position = Vector3.Lerp(m_NetworkStates[m_LatestStateArrayIndex - 2].Position, m_NetworkStates[m_LatestStateArrayIndex - 1].Position, completePercent);
-                    transform.rotation = Quaternion.Lerp(Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 2].Rotation), Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 1].Rotation), completePercent);
+                    Vector3 newScale = Vector3.Lerp(m_NetworkStates[m_LatestStateArrayIndex - 2].Scale, m_NetworkStates[m_LatestStateArrayIndex - 1].Scale, completePercent);
+                    Vector3 newPos = Vector3.Lerp(m_NetworkStates[m_LatestStateArrayIndex - 2].Position, m_NetworkStates[m_LatestStateArrayIndex - 1].Position, completePercent);
+                    Quaternion newRot = Quaternion.Lerp(Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 2].Rotation), Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 1].Rotation), completePercent);
 
+                    if (Vector3.Distance(transform.position, newPos) > (isLocalPlayer ? m_PlayerSnapThreshold : m_ObjectSnapThreshold))
+                    {
+                        transform.position = newPos;
+                        transform.rotation = newRot;
+                        transform.localScale = newScale;
+                    }
+
+                    m_LastRecordedScaler = (transform.localScale - lastScale);
                     m_LastRecordedVelocity = (transform.position - lastPos);
                     m_LastRecordedAngularVelocity = (transform.rotation.eulerAngles - lastRot);
                 }
@@ -85,7 +107,8 @@ public class NetworkTransformSyncer : NetworkBehaviour
                     }
                     else
                     {
-                        m_Rigidbody.AddForce(m_LastRecordedVelocity.normalized * m_Player.MoveSpeed);
+                        //TODO: Implement extrapolation.
+                        //m_Rigidbody.AddForce(m_LastRecordedVelocity.normalized * m_Player.MoveSpeed);
                         //m_Rigidbody.velocity = m_LastRecordedVelocity * Time.deltaTime;
                         //transform.Rotate(m_LastRecordedAngularVelocity * Time.deltaTime);
                     }
@@ -94,7 +117,7 @@ public class NetworkTransformSyncer : NetworkBehaviour
         }
     }
 
-    private IEnumerator SyncTimer()
+    private IEnumerator syncTimer()
     {
         for (; ; )
         {
@@ -110,6 +133,7 @@ public class NetworkTransformSyncer : NetworkBehaviour
         NetworkState state = LgJsonNode.Create<NetworkState>();
         state.Position = transform.position;
         state.Rotation = transform.rotation.eulerAngles;
+        state.Scale = transform.localScale;
 
         if (initialState || !state.Equals(m_NetworkStates[m_LatestStateArrayIndex - 1]))
         {
@@ -127,27 +151,38 @@ public class NetworkTransformSyncer : NetworkBehaviour
 
     public override void OnDeserialize(NetworkReader reader, bool initialState)
     {
-        string serializedNetState = reader.ReadString();
-
-        NetworkState state = LgJsonNode.CreateFromJsonString<NetworkState>(serializedNetState);
-
-        //No need to apply a new state if nothing changed.
-        if (initialState || m_NetworkStates[m_LatestStateArrayIndex - 1].UpdateTime != Time.time)
+        try
         {
-            addNewState(state);
-            StateID = m_NetworkStates[0].StateID;
-            state.UpdateTime = Time.time;
+            string serializedNetState = reader.ReadString();
 
-            if (initialState)
+            NetworkState state = LgJsonNode.CreateFromJsonString<NetworkState>(serializedNetState);
+
+            //No need to apply a new state if nothing changed.
+            if (initialState || m_NetworkStates[m_LatestStateArrayIndex - 1].UpdateTime != Time.time)
             {
-                m_Player = GetComponent<PlayerControls>();
-                m_Rigidbody = GetComponent<Rigidbody>();
-                m_Rigidbody.useGravity = false;
-            }
+                addNewState(state);
+                StateID = m_NetworkStates[0].StateID;
+                state.UpdateTime = Time.time;
 
-            //In addition to adding the new state, we'll calculate the average time between syncs over the past buffered states
-            //to help make interpolation more consistent
-            m_AverageTimePerSyncs = m_NetworkStates.AverageUpdateTime(m_LatestStateArrayIndex);
+                if (initialState)
+                {
+                    m_Player = GetComponent<PlayerControls>();
+                    m_Rigidbody = GetComponent<Rigidbody>();
+
+                    if (!isLocalPlayer)
+                    {
+                        m_Rigidbody.useGravity = false;
+                    }
+                }
+
+                //In addition to adding the new state, we'll calculate the average time between syncs over the past buffered states
+                //to help make interpolation more consistent
+                m_AverageTimePerSyncs = m_NetworkStates.AverageUpdateTime(m_LatestStateArrayIndex);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error with network Deserialize: " + e.Message);
         }
     }
 
