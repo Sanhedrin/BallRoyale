@@ -22,11 +22,6 @@ public class PlayerScript : NetworkBehaviour
     private void OnHealthChanged(int i_NewHealth)
     {
         m_Health = i_NewHealth < k_MaxHealth ? i_NewHealth : k_MaxHealth;
-        
-        if (!m_PlayerHealthText)
-        {
-            Debug.LogError("Health not connected");
-        }
     }
 
     private const int k_MaxHealth = 999;
@@ -43,31 +38,27 @@ public class PlayerScript : NetworkBehaviour
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
     public Rigidbody m_Rigidbody;
+    private Transform m_PlayerUICanvas;
+    private HealthText m_HealthText;
 
-    private Text m_PlayerHealthText;
-
-    [SyncVar]
-    private int m_ConnectionID = -1;
-
-    private delegate void IDAssignedEventHandler(object sender, IDEventArgs e);
-    private event IDAssignedEventHandler IDAssigned;
+    public int PlayerID { get; private set; }
 
 	// Use this for initialization
 	void Start ()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
 
-        IDAssigned += new IDAssignedEventHandler(PlayerController_IDAssigned);
+        //Attach a health indicator to this player;
+        m_PlayerUICanvas = GameObject.FindGameObjectWithTag(ConstParams.PlayerUICanvasTag).transform;
+        m_HealthText = (Instantiate(Resources.Load(ConstParams.HealthTextObject), new Vector3(Screen.width / 8, Screen.height / 8, 0), Quaternion.identity) as GameObject).GetComponent<HealthText>();
+        m_HealthText.transform.SetParent(m_PlayerUICanvas);
+        m_HealthText.Player = gameObject;
 
-        if (isLocalPlayer)
-        {
-            CmdRequestID();
-        }
-        else if(m_ConnectionID > 0)
-        {
-            OnIDAssigned(new IDEventArgs(m_ConnectionID));
-        }
+        //Get the player's ID
+        PlayerID = GameObject.FindObjectsOfType<HealthText>().Length;
 
+        //Change texture to fit player ID
+        GetComponent<Renderer>().material.mainTexture = m_PlayerTextures[PlayerID - 1];
 
         Random.seed = System.DateTime.Now.Millisecond;
 	}
@@ -75,60 +66,12 @@ public class PlayerScript : NetworkBehaviour
 	// Update is called once per frame, non-physics updates should be writen here.
     void Update()
     {
-        if (m_PlayerHealthText)
+        if (m_HealthText)
         {
-            m_PlayerHealthText.text = m_Health.ToString();
-        }
-    }
-
-    [Command]
-    public void CmdRequestID()
-    {
-        BallGameNetworkManager.RequestIDFromServer((int)netId.Value, this);
-    }
-
-    [ClientRpc]
-    public void RpcIDAssignmentResponse(int i_ID)
-    {
-        OnIDAssigned(new IDEventArgs(i_ID));
-    }
-
-    /// <summary>
-    /// Raising the IDAssigned event.
-    /// </summary>
-    /// <param name="e">IDEventArgs containing the ID assigned to the player by the server.</param>
-    private void OnIDAssigned(IDEventArgs e)
-    {
-        if (IDAssigned != null)
-        {
-            IDAssigned.Invoke(this, e);
+            m_HealthText.UpdateHealth(m_Health);
         }
     }
         
-    //Activates all methods based on ID assignment
-    private void PlayerController_IDAssigned(object sender, IDEventArgs e)
-    {
-        m_ConnectionID = e.ID;
-        AssignTextForPlayer(e.ID);
-        AssignTextureForPlayer(e.ID);
-    }
-
-    private void AssignTextureForPlayer(int i_PlayerID)
-    {
-        GetComponent<Renderer>().material.mainTexture = m_PlayerTextures[i_PlayerID - 1];
-    }
-
-    /// <summary>
-    /// Assigns the text object holding the health of a player to the corresponding player ID.
-    /// </summary>
-    private void AssignTextForPlayer(int i_PlayerID)
-    {
-        GameObject text = GameObject.Find(string.Format("Player{0}HP", i_PlayerID));
-        text.SetActive(true);
-        m_PlayerHealthText = text.GetComponent<Text>();
-    }
-
-    
     /// <summary>
     /// Increases the velocity of the pushed player by the amount of damage they've taken..
     /// </summary>
@@ -166,13 +109,12 @@ public class PlayerScript : NetworkBehaviour
 
     void OnDestroy()
     {
-        if (!m_PlayerHealthText)
+        if (m_HealthText)
         {
-            return;
+            m_HealthText.GetComponent<Text>().text = "";
+            m_HealthText.gameObject.SetActive(false);
         }
 
-        m_PlayerHealthText.text = "";
-        m_PlayerHealthText.gameObject.SetActive(false);
     }
 
     //Movement is completely done on the server and then sent to the clients after calculations, so there's no sense in

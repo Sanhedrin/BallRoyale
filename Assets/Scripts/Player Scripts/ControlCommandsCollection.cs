@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using LgOctEngine.CoreClasses;
 
-[Serializable]
-public struct ControlCommandsCollection
+public class ControlCommandsCollection : LgJsonDictionary
 {
     public float HorizontalMovement { get; set; }
     public float VerticalMovement { get; set; }
     public bool Jump { get; set; }
     public bool Break { get; set; }
-
+    
     public bool IsNewInput
     {
         get

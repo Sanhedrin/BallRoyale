@@ -19,9 +19,11 @@ public class PlayerControls : NetworkBehaviour
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
     public Rigidbody m_Rigidbody;
+    private NetworkTransformSyncer m_NetTrans;
 
     [SerializeField]
     private float m_MoveSpeed = 20;
+    public float MoveSpeed { get { return m_MoveSpeed; } }
 
     [SerializeField]
     private float m_JumpSpeed = 350;
@@ -52,6 +54,7 @@ public class PlayerControls : NetworkBehaviour
     {
         ActiveEffects = new List<StatusEffect>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_NetTrans = GetComponent<NetworkTransformSyncer>();
     }
 
     void FixedUpdate()
@@ -74,19 +77,13 @@ public class PlayerControls : NetworkBehaviour
                     //movementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
                 }
 
-                CmdMovementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
+                CmdMovementManagement(NetworkTransformSyncer.StateID, controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
             }
         }
     }
 
     [Command]
-    private void CmdMovementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
-    {
-        movementManagement(i_Horizontal, i_Vertical, i_Jump, i_BreakButton);
-    }
-
-    [Client]
-    private void movementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    private void CmdMovementManagement(int i_StateTime, float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
         if (i_BreakButton)
         {
@@ -105,6 +102,7 @@ public class PlayerControls : NetworkBehaviour
             m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
         }
     }
+
     
     // Update is called once per frame
     void Update()

@@ -25,4 +25,28 @@ public static class ExtensionMethods {
     {
         return i_Collection.Count == 0;
     }
+
+    public static void ShiftLeft(this Array i_Array)
+    {
+        for (int i = 0; i < i_Array.Length - 1; ++i)
+        {
+            i_Array.SetValue(i_Array.GetValue(i + 1), i);
+        }
+
+        i_Array.SetValue(null, i_Array.Length - 1);
+    }
+
+    public static float AverageUpdateTime(this NetworkState[] i_NetStates, int i_Length)
+    {
+        float average = 0;
+
+        for (int i = 1; i < i_Length; ++i)
+        {
+            average += i_NetStates[i].UpdateTime - i_NetStates[i-1].UpdateTime;
+        }
+
+        average /= i_Length;
+
+        return average;
+    }
 }
