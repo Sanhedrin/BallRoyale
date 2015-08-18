@@ -194,10 +194,12 @@ public class PlayerScript : NetworkBehaviour
             editPlayersKills();
             if (m_DeathCount >= k_MaxDeaths)
             {
-                gameObject.SetActive(false);
+                RpcDeactivatePlayer();
             }
-
-            serverRespawnPlayer();
+            else
+            {
+                serverRespawnPlayer();
+            }
         }
 
         if (i_CollisionInfo.gameObject.CompareTag(ConstParams.PlayerTag))
@@ -207,6 +209,12 @@ public class PlayerScript : NetworkBehaviour
             StartCoroutine(serverPushPlayer(m_LastColidingPlayer));
             handleDamage(i_CollisionInfo);
         }
+    }
+
+    [ClientRpc]
+    private void RpcDeactivatePlayer()
+    {
+        gameObject.SetActive(false);
     }
 
     private IEnumerator killCreditTimeLimit()
