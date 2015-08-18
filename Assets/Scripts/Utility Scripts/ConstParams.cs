@@ -16,7 +16,10 @@ public static class ConstParams
     public const string PlayerUICanvasTag = "Player GUI";
     public const string ObjectPoolManager = "ObjectPoolManager";
     public const string HealthTextObject = "HealthText";
-
+    public const string BoxPrefab = "BoxPrefab";
+    
+    public const float SlowedMoveSpeed = 1;
+    public const float BaseMoveSpeed = 20;
     public const float BreakDrag = 2f;
     public const float BaseDrag = 0.35f;
 
@@ -29,5 +32,6 @@ public enum eObjectPoolNames
 {
     Bullet = 0,
     PowerupItem,
+    LandMine,
 }
 

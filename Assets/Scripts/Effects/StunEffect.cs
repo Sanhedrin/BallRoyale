@@ -13,7 +13,7 @@ public class StunEffect : StatusEffect
 
     public override void Activate(PlayerControls i_PlayerControls)
     {
-        i_PlayerControls.Rigidbody.velocity = Vector3.zero;
+        i_PlayerControls.m_Rigidbody.velocity = Vector3.zero;
     }
 
     public override void Deactivate(PlayerControls i_PlayerControls)

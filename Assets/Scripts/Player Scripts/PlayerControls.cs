@@ -14,6 +14,10 @@ public class PlayerControls : NetworkBehaviour
 {
     [SyncVar]
     private bool m_Grounded = false;
+    public bool Grounded
+    {
+        get { return m_Grounded; }
+    }
 
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
@@ -22,7 +26,7 @@ public class PlayerControls : NetworkBehaviour
 
     [SerializeField]
     private float m_MoveSpeed = 20;
-    public float MoveSpeed { get { return m_MoveSpeed; } }
+    public float MoveSpeed { get { return m_MoveSpeed; } set { m_MoveSpeed = value; } }
 
     [SerializeField]
     private float m_JumpSpeed = 350;
@@ -125,7 +129,7 @@ public class PlayerControls : NetworkBehaviour
             if (timePassed.TotalSeconds >= (double)effect.EffectTime)
             {
                 ActiveEffects.Remove(effect);
-                effect.RevertEffect(m_Rigidbody);
+                effect.Deactivate(this);
             }
         }
     }
@@ -162,5 +166,29 @@ public class PlayerControls : NetworkBehaviour
     private void CmdActivateSkill()
     {
         GetComponentInChildren<Skill>().Activate();
+    }
+
+    [ClientRpc]
+    public void RpcAddSlowEffect()
+    {
+        bool slowEffectFound = false;
+
+        foreach (StatusEffect effect in ActiveEffects)
+        {
+            if (effect is SlowEffect)
+            {
+                slowEffectFound = true;
+                effect.RefreshTimer();
+                break;
+            }
+        }
+
+        if (!slowEffectFound)
+        {
+            SlowEffect slowEffect = new SlowEffect();
+
+            ActiveEffects.Add(slowEffect);
+            slowEffect.Activate(this);
+        }
     }
 }

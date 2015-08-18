@@ -33,7 +33,7 @@ public class LandMineSkill : Skill {
 
     private void setMine()
     {             
-            GameObject currObj = ObjectPoolManager.Instance.GetPoolForObject(eObjectPoolNames.LandMide).PullObject();
+            GameObject currObj = ObjectPoolManager.Instance.GetPoolForObject(eObjectPoolNames.LandMine).PullObject();
 
             currObj.transform.position = m_PlayerObject.transform.position;
 
