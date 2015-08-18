@@ -24,7 +24,6 @@ public sealed class PhaseShiftSkill : Skill
         Debug.Log(LayerMask.LayerToName(m_PlayerObject.gameObject.layer));
     }
 
-
     public override void Activate()
     {
         if (!m_isActive)
