@@ -23,9 +23,8 @@ public abstract class Obstacle : NetworkBehaviour
     }
 
     [ClientRpc]
-    protected void RpcActivetObstical(bool i_Activet)
+    protected void RpcActivateObstical(bool i_Activate)
     {
-        gameObject.SetActive(i_Activet);
+        gameObject.SetActive(i_Activate);
     }
-
 }

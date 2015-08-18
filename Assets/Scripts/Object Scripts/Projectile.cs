@@ -6,9 +6,10 @@ using System;
 [AddComponentMenu("BallGame Scripts/Object Scripts/Projectile")]
 public class Projectile : Obstacle
 {
-    private const int k_ProjectileDamage = 100;
-    
-    void OnEnable()
+    [SerializeField]
+    private const int k_ProjectileDamage = 50;
+
+    protected override void OnEnable()
     {
         if (isServer)
         {
@@ -20,12 +21,7 @@ public class Projectile : Obstacle
     IEnumerator DestroyProjectile(float i_StartIn)
     {
         yield return new WaitForSeconds(i_StartIn);
-        RpcActivetObstical(false);
-    }
-
-    void OnDisable()
-    {
-        StopAllCoroutines();
+        RpcActivateObstical(false);
     }
 
     [ServerCallback]
@@ -38,8 +34,8 @@ public class Projectile : Obstacle
             PlayerControls playerControls = i_Other.GetComponent<PlayerControls>();
 
             player.CmdDealDamage(k_ProjectileDamage);
-
             playerControls.RpcAddSlowEffect();
+            RpcActivateObstical(false);
         }
     }
 }

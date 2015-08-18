@@ -4,7 +4,6 @@ using System;
 
 public class SlowEffect : StatusEffect
 {
-    private const float k_AddedDrag = 10000.0f;
     private const int k_SlowTime = 5;
 
     public SlowEffect()
