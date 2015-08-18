@@ -37,14 +37,7 @@ public sealed class FireSkil : Skill
             currObj.transform.Rotate(new Vector3(0, 90, 0)); // rotate the missle by 90 degrees on the y axes
             Rigidbody rigBody = currObj.GetComponent<Rigidbody>();
             rigBody.velocity = velocityDir * m_ProjectileSpeed;
-            RpcActivateBullet(rigBody.NetID());
+            RpcActivateObject(rigBody.NetID(), true);
         }
     }
-
-    [ClientRpc]
-    private void RpcActivateBullet(NetworkInstanceId i_GameObjectID)
-    {
-        ClientScene.FindLocalObject(i_GameObjectID).SetActive(true);
-    }
-
 }

@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public abstract class Skill : NetworkBehaviour
 {
     protected PlayerControls m_PlayerObject;
+    protected GameObject player;
 
     private Renderer m_Renderer;
     private Collider m_Collider;
@@ -14,6 +15,7 @@ public abstract class Skill : NetworkBehaviour
 
     [SerializeField]
     protected float m_DurationInSeconds;
+
 
     public abstract void Activate();
     protected abstract void OnAttachedToPlayer();
@@ -39,28 +41,31 @@ public abstract class Skill : NetworkBehaviour
     [ClientRpc]
     private void RpcAttachSkill(NetworkInstanceId i_PlayerID)
     {
-        GameObject player = ClientScene.FindLocalObject(i_PlayerID);
+        player = ClientScene.FindLocalObject(i_PlayerID);
         transform.SetParent(player.transform);
         m_PlayerObject = transform.root.GetComponentInChildren<PlayerControls>();
         m_AttachedToPlayer = true;
         m_Collider.enabled = false;
-        m_Renderer.enabled = false;
-      
+        //m_Renderer.enabled = false;
+
+        transform.FindChild(ConstParams.BoxPrefab).gameObject.SetActive(false);
+
         OnAttachedToPlayer();
     }
 
     [ClientRpc]
-    private void RpcDetachSkill()
+    protected void RpcDetachSkill()
     {
         transform.position = new Vector3(-1337, -1337, -1337);
         transform.SetParent(null);
-        m_PlayerObject = null;
         m_AttachedToPlayer = false;
         m_Collider.enabled = true;
-        m_Renderer.enabled = true;
+        //m_Renderer.enabled = true;
+  
+        StopAllCoroutines();
 
         OnDetachedFromPlayer();
-
+        m_PlayerObject = null;
         gameObject.SetActive(false);
     }
 
@@ -80,5 +85,11 @@ public abstract class Skill : NetworkBehaviour
             RpcAttachSkill(i_Collider.NetID());
             StartCoroutine(skillUpTime(m_DurationInSeconds));
         }
+    }
+
+    [ClientRpc]
+    protected void RpcActivateObject(NetworkInstanceId i_GameObjectID, bool i_Activate)
+    {
+        ClientScene.FindLocalObject(i_GameObjectID).SetActive(i_Activate);
     }
 }

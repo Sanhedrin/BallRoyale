@@ -16,7 +16,7 @@ GameObject:
   - 114: {fileID: 11415686}
   - 114: {fileID: 11445056}
   - 114: {fileID: 11423980}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerBall
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -155,8 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed891c3e523d9f4fbe86035cc602748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Rigidbody: {fileID: 0}
-  m_MoveSpeed: 20
   m_JumpSpeed: 350
 --- !u!135 &13541108
 SphereCollider:
@@ -220,7 +218,7 @@ Prefab:
       objectReference: {fileID: 199036, guid: 3bb0ff276f97ef6488de4263d26e4edf, type: 2}
     - target: {fileID: 0}
       propertyPath: m_Layer
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_MoveSpeed

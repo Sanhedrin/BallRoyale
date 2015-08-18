@@ -11,12 +11,13 @@ public class StunEffect : StatusEffect
         m_EffectTime = k_StunTime;
     }
 
-    public override void ActivateEffect(Rigidbody i_EffectedRigidBody)
+    public override void Activate(PlayerControls i_PlayerControls)
     {
-        i_EffectedRigidBody.velocity = Vector3.zero;
+        i_PlayerControls.Rigidbody.velocity = Vector3.zero;
     }
-    
-    public override void RevertEffect(Rigidbody i_EffectedRigidBody)
+
+    public override void Deactivate(PlayerControls i_PlayerControls)
     {
+
     }
 }
