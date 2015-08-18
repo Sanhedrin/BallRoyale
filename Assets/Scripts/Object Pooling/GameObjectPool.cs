@@ -28,11 +28,16 @@ public class GameObjectPool
     private GameObject addToPool()
     {
         GameObject newGameobj = GameObject.Instantiate(m_PoolObj, new Vector3(-1337, -1337, -1337), Quaternion.identity) as GameObject;
-        newGameobj.SetActive(false);
+        RpcSetActive(newGameobj, false);
         m_GameObjectList.Add(newGameobj);
         NetworkServer.Spawn(newGameobj);
 
         return newGameobj;
+    }
+    [ClientRpc]
+    private void RpcSetActive(GameObject i_GameObj, bool i_Active)
+    {
+        i_GameObj.SetActive(i_Active);
     }
 
     public GameObject PullObject()

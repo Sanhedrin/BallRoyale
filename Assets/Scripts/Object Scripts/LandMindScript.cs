@@ -20,10 +20,13 @@ public class LandMindScript : Obstacle {
         m_Renderer = GetComponent<Renderer>();             
     }
 
+    [ServerCallback]
     protected override void OnEnable()
     {
         if (m_Renderer && m_Collider)
         {
+            m_Collider = GetComponent<Collider>();
+            m_Renderer = GetComponent<Renderer>(); 
             RpcShowMine(true);
         }
 

@@ -8,7 +8,7 @@ public abstract class Obstacle : NetworkBehaviour
     protected Rigidbody m_OtherRigidBody;
     
     [SerializeField]
-    protected float m_LifeTime = 2f;
+    protected float m_LifeTime = 11f;
     [SerializeField]
     protected int k_DamageToPlyer = 100;
 
