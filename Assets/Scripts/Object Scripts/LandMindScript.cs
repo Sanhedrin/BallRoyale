@@ -41,7 +41,7 @@ public class LandMindScript : Obstacle {
 
         yield return new WaitForSeconds(i_DestroyTimer);
 
-        RpcActivetObstical(false);
+        RpcActivateObstical(false);
     }
 
     [ServerCallback]
@@ -55,7 +55,7 @@ public class LandMindScript : Obstacle {
 
             i_Other.GetComponent<PlayerScript>().CmdDealDamage(k_DamageToPlyer); 
 
-            RpcActivetObstical(false);
+            RpcActivateObstical(false);
         }
     }
 

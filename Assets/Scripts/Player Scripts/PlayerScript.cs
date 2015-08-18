@@ -30,7 +30,9 @@ public class PlayerScript : NetworkBehaviour
     }
 
     private const int k_MaxHealth = 999;
+    private const int k_MaxDeaths = 3;
     private const int k_DamageReduction = 10;
+    private const float k_KillCreditTimeLimit = 1f;
 
     [SerializeField]
     private Texture[] m_PlayerTextures;
@@ -48,6 +50,15 @@ public class PlayerScript : NetworkBehaviour
 
     [SyncVar]
     private int m_ConnectionID = -1;
+
+    [SyncVar]
+    private int m_DeathCount = 0;
+
+    [SyncVar]
+    private int m_KillCount = 0;
+
+    private GameObject m_LastColidingPlayer;
+    private DateTime m_LastPlayerCollision;
 
     private delegate void IDAssignedEventHandler(object sender, IDEventArgs e);
     private event IDAssignedEventHandler IDAssigned;
@@ -126,7 +137,6 @@ public class PlayerScript : NetworkBehaviour
         text.SetActive(true);
         m_PlayerHealthText = text.GetComponent<Text>();
     }
-
     
     /// <summary>
     /// Increases the velocity of the pushed player by the amount of damage they've taken..
@@ -181,20 +191,48 @@ public class PlayerScript : NetworkBehaviour
     {
         if (i_CollisionInfo.gameObject.layer == LayerMask.NameToLayer(ConstParams.KillBoxLayer))
         {
+            editPlayersKills();
+            if (m_DeathCount >= k_MaxDeaths)
+            {
+                gameObject.SetActive(false);
+            }
+
             serverRespawnPlayer();
         }
 
         if (i_CollisionInfo.gameObject.CompareTag(ConstParams.PlayerTag))
         {
-            StartCoroutine(serverPushPlayer(i_CollisionInfo.collider.gameObject));
+            m_LastColidingPlayer = i_CollisionInfo.collider.gameObject;
+            StartCoroutine(killCreditTimeLimit());
+            StartCoroutine(serverPushPlayer(m_LastColidingPlayer));
+            handleDamage(i_CollisionInfo);
+        }
+    }
 
-            int baseDamage = (int)(i_CollisionInfo.relativeVelocity.sqrMagnitude - i_CollisionInfo.collider.GetComponent<Rigidbody>().velocity.sqrMagnitude);
-            baseDamage /= k_DamageReduction;
+    private IEnumerator killCreditTimeLimit()
+    {
+        yield return new WaitForSeconds(k_KillCreditTimeLimit);
 
-            if (baseDamage > 0)
-            {
-                CmdDealDamage(baseDamage);
-            }
+        m_LastColidingPlayer = null;
+    }
+
+    private void editPlayersKills()
+    {
+        if (m_LastColidingPlayer != null)
+        {
+            m_LastColidingPlayer.GetComponent<PlayerScript>().m_KillCount += 1;
+        }
+        m_LastColidingPlayer = null;
+        m_DeathCount += 1;
+    }
+
+    private void handleDamage(Collision i_CollisionInfo)
+    {
+        int baseDamage = (int)(i_CollisionInfo.relativeVelocity.sqrMagnitude - i_CollisionInfo.collider.GetComponent<Rigidbody>().velocity.sqrMagnitude);
+        baseDamage /= k_DamageReduction;
+        if (baseDamage > 0)
+        {
+            CmdDealDamage(baseDamage);
         }
     }
 
