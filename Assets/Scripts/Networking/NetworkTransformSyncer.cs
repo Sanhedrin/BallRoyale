@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using LgOctEngine.CoreClasses;
 
 public class NetworkState : LgJsonDictionary
@@ -32,7 +33,7 @@ public class NetworkTransformSyncer : NetworkBehaviour
 {
     private Rigidbody m_Rigidbody;
     private PlayerControls m_Player;
-    
+   
     public static int StateID { get; private set; }
 
     private NetworkState[] m_NetworkStates = new NetworkState[20];
@@ -71,7 +72,7 @@ public class NetworkTransformSyncer : NetworkBehaviour
                 //First, we'll try to interpolate between the 2 newest frames
 
                 //Checking how far we are between the 2 frames based on a sync rate.
-                float completePercent = (Time.time - m_NetworkStates[m_LatestStateArrayIndex - 1].UpdateTime) / (m_AverageTimePerSyncs + 2 * Time.deltaTime);//(1 / ConstParams.NetTransformSyncRate);
+                float completePercent = (Time.time - m_NetworkStates[m_LatestStateArrayIndex - 1].UpdateTime) / (m_AverageTimePerSyncs);//(1 / ConstParams.NetTransformSyncRate);
 
                 //If we're still not done interpolating the current state.
                 if (completePercent <= 1)
@@ -82,11 +83,27 @@ public class NetworkTransformSyncer : NetworkBehaviour
 
                     Vector3 newScale = Vector3.Lerp(m_NetworkStates[m_LatestStateArrayIndex - 2].Scale, m_NetworkStates[m_LatestStateArrayIndex - 1].Scale, completePercent);
                     Vector3 newPos = Vector3.Lerp(m_NetworkStates[m_LatestStateArrayIndex - 2].Position, m_NetworkStates[m_LatestStateArrayIndex - 1].Position, completePercent);
-                    Quaternion newRot = Quaternion.Lerp(Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 2].Rotation), Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 1].Rotation), completePercent);
+                    Quaternion newRot = Quaternion.Slerp(Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 2].Rotation), Quaternion.Euler(m_NetworkStates[m_LatestStateArrayIndex - 1].Rotation), completePercent);
 
+                    //If we need to snap to the position on a bigger sway in position than allowed.
                     if (Vector3.Distance(transform.position, newPos) > (isLocalPlayer ? m_PlayerSnapThreshold : m_ObjectSnapThreshold))
                     {
                         transform.position = newPos;
+                    }
+                    //Otherwise, we'll smoothly interpolate our velocity to reach the next position in time.
+                    //We only do this for the non local player objects to try and keep a smooth experience for
+                    //each player, and only slingshot if we need to snap back.
+                    else if(!isLocalPlayer)
+                    {
+                        //We have our current position and the target position for the current frame as our
+                        //waypoints, and we know that deltaTime is the time between updates, so we have the
+                        //distance and time, and only need to calculate the speed to move at between them.
+                        //S = D/T
+                        m_Rigidbody.velocity = (newPos - transform.position) / Time.deltaTime;
+                    }
+
+                    if (!isLocalPlayer)
+                    {
                         transform.rotation = newRot;
                         transform.localScale = newScale;
                     }
@@ -98,20 +115,20 @@ public class NetworkTransformSyncer : NetworkBehaviour
                 //If we still didn't get a new state to interpolate to, we'll have to extrapolate instead.
                 else
                 {
-                    if (m_LastRecordedVelocity.magnitude < m_ExtrapolationThreshold)
-                    {
-                        m_Rigidbody.isKinematic = true;
-                        m_Rigidbody.velocity = Vector3.zero;
-                        m_Rigidbody.Sleep();
-                        m_Rigidbody.isKinematic = false;
-                    }
-                    else
-                    {
-                        //TODO: Implement extrapolation.
-                        //m_Rigidbody.AddForce(m_LastRecordedVelocity.normalized * m_Player.MoveSpeed);
-                        //m_Rigidbody.velocity = m_LastRecordedVelocity * Time.deltaTime;
-                        //transform.Rotate(m_LastRecordedAngularVelocity * Time.deltaTime);
-                    }
+                    //if (m_LastRecordedVelocity.magnitude < m_ExtrapolationThreshold)
+                    //{
+                    //    m_Rigidbody.isKinematic = true;
+                    //    m_Rigidbody.velocity = Vector3.zero;
+                    //    m_Rigidbody.Sleep();
+                    //    m_Rigidbody.isKinematic = false;
+                    //}
+                    //else
+                    //{
+                    //    //TODO: Implement extrapolation.
+                    //    //m_Rigidbody.AddForce(m_LastRecordedVelocity.normalized * m_Player.MoveSpeed);
+                    //    //m_Rigidbody.velocity = m_LastRecordedVelocity * Time.deltaTime;
+                    //    //transform.Rotate(m_LastRecordedAngularVelocity * Time.deltaTime);
+                    //}
                 }
             }
         }
@@ -134,11 +151,11 @@ public class NetworkTransformSyncer : NetworkBehaviour
         state.Position = transform.position;
         state.Rotation = transform.rotation.eulerAngles;
         state.Scale = transform.localScale;
+        state.StateID = StateID++;
 
         if (initialState || !state.Equals(m_NetworkStates[m_LatestStateArrayIndex - 1]))
         {
             shouldSync = true;
-            state.StateID = StateID++;
 
             string serializedNetState = state.Serialize();
             writer.Write(serializedNetState);

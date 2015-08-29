@@ -77,7 +77,7 @@ public class PlayerControls : NetworkBehaviour
             {
                 if (!isServer && isLocalPlayer)
                 {
-                    //movementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
+                    movementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
                 }
 
                 CmdMovementManagement(NetworkTransformSyncer.StateID, controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
