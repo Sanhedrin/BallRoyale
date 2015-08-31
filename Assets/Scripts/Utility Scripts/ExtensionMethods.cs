@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public static class ExtensionMethods {
 
@@ -26,26 +27,26 @@ public static class ExtensionMethods {
         return i_Collection.Count == 0;
     }
 
-    public static void ShiftLeft(this Array i_Array)
+    public static void ShiftLeft<T>(this List<T> i_List)
     {
-        for (int i = 0; i < i_Array.Length - 1; ++i)
+        for (int i = 0; i < i_List.Count - 1; ++i)
         {
-            i_Array.SetValue(i_Array.GetValue(i + 1), i);
+            i_List[i] = i_List[i + 1];
         }
 
-        i_Array.SetValue(null, i_Array.Length - 1);
+        i_List.RemoveAt(i_List.Count - 1);
     }
 
-    public static float AverageUpdateTime(this NetworkState[] i_NetStates, int i_Length)
+    public static float AverageUpdateTime(this SyncList<NetworkState> i_NetStates)
     {
         float average = 0;
 
-        for (int i = 1; i < i_Length; ++i)
+        for (int i = 1; i < i_NetStates.Count; ++i)
         {
             average += i_NetStates[i].UpdateTime - i_NetStates[i-1].UpdateTime;
         }
 
-        average /= i_Length;
+        average /= i_NetStates.Count;
 
         return average;
     }
