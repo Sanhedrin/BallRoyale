@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ExtrapolationThreshold: .00999999978
   m_ObjectSnapThreshold: .100000001
-  m_PlayerSnapThreshold: 2
+  m_PlayerSnapThreshold: .100000001
 --- !u!114 &11439526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -312,7 +312,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_PlayerSnapThreshold
-      value: 2
+      value: .100000001
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_ObjectSnapThreshold

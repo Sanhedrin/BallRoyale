@@ -73,43 +73,33 @@ public class PlayerControls : NetworkBehaviour
                 Break = Input.GetButton(ConstParams.BreakButton) && m_Grounded
             };
 
-            if (controlInput.IsNewInput)
-            {
-                if (!isServer && isLocalPlayer)
-                {
-                    movementManagement(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
-                }
+            m_NetTrans.SendNetCommand(controlInput);
+        }
+    }
 
-                CmdMovementManagement(m_NetTrans.StateID, controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
+    public void MovePlayer(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    {
+        if (!IsStunned)
+        {
+            if (i_BreakButton)
+            {
+                m_Rigidbody.drag = ConstParams.BreakDrag;
+            }
+            else
+            {
+                m_Rigidbody.drag = ConstParams.BaseDrag;
+            }
+
+            Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
+            m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
+
+            if (i_Jump)
+            {
+                m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
             }
         }
     }
 
-    [Command]
-    private void CmdMovementManagement(int i_StateID, float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
-    {
-        movementManagement(i_Horizontal, i_Vertical, i_Jump, i_BreakButton);
-    }
-
-    private void movementManagement(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
-    {
-        if (i_BreakButton)
-        {
-            m_Rigidbody.drag = ConstParams.BreakDrag;
-        }
-        else
-        {
-            m_Rigidbody.drag = ConstParams.BaseDrag;
-        }
-
-        Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
-        m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
-
-        if (i_Jump)
-        {
-            m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
-        }
-    }
         
     // Update is called once per frame
     void Update()

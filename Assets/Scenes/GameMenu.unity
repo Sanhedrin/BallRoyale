@@ -3103,7 +3103,7 @@ MonoBehaviour:
     m_MaxSentMessageQueueSize: 128
     m_IsAcksLong: 0
     m_Channels: []
-  m_Channels: 050000000700000007000000
+  m_Channels: 050000000700000005000000
   m_UseSimulator: 1
   m_SimulatedLatency: 150
   m_PacketLossPercentage: 0

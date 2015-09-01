@@ -37,7 +37,7 @@ public static class ExtensionMethods {
         i_List.RemoveAt(i_List.Count - 1);
     }
 
-    public static float AverageUpdateTime(this SyncList<NetworkState> i_NetStates)
+    public static float AverageUpdateTime(this List<NetworkState> i_NetStates)
     {
         float average = 0;
 

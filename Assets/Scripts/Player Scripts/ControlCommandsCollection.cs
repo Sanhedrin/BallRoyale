@@ -9,6 +9,7 @@ public class ControlCommandsCollection : LgJsonDictionary
     public float VerticalMovement { get; set; }
     public bool Jump { get; set; }
     public bool Break { get; set; }
+    public int StateSentAt { get; set; }
     
     public bool IsNewInput
     {
