@@ -37,17 +37,17 @@ public static class ExtensionMethods {
         i_List.RemoveAt(i_List.Count - 1);
     }
 
-    public static float AverageUpdateTime(this List<NetworkState> i_NetStates)
-    {
-        float average = 0;
+    //public static float AverageUpdateTime(this List<NetworkState> i_NetStates)
+    //{
+    //    float average = 0;
 
-        for (int i = 1; i < i_NetStates.Count; ++i)
-        {
-            average += i_NetStates[i].UpdateTime - i_NetStates[i-1].UpdateTime;
-        }
+    //    for (int i = 1; i < i_NetStates.Count; ++i)
+    //    {
+    //        average += i_NetStates[i].UpdateTime - i_NetStates[i-1].UpdateTime;
+    //    }
 
-        average /= i_NetStates.Count;
+    //    average /= i_NetStates.Count;
 
-        return average;
-    }
+    //    return average;
+    //}
 }

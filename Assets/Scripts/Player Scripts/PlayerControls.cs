@@ -22,7 +22,7 @@ public class PlayerControls : NetworkBehaviour
     //Exposing this member will help us save performance by removing GetComponent() calls which are very expensive.
     [HideInInspector]
     public Rigidbody m_Rigidbody;
-    private NetworkTransformSyncer m_NetTrans;
+    //private NetworkTransformSyncer m_NetTrans;
 
     [SerializeField]
     private float m_MoveSpeed = 20;
@@ -57,7 +57,7 @@ public class PlayerControls : NetworkBehaviour
     {
         ActiveEffects = new List<StatusEffect>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_NetTrans = GetComponent<NetworkTransformSyncer>();
+        //m_NetTrans = GetComponent<NetworkTransformSyncer>();
     }
 
     void FixedUpdate()
@@ -73,11 +73,13 @@ public class PlayerControls : NetworkBehaviour
                 Break = Input.GetButton(ConstParams.BreakButton) && m_Grounded
             };
 
-            m_NetTrans.SendNetCommand(controlInput);
+            //m_NetTrans.SendNetCommand(controlInput);
+            CmdMovePlayer(controlInput.HorizontalMovement, controlInput.VerticalMovement, controlInput.Jump, controlInput.Break);
         }
     }
 
-    public void MovePlayer(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
+    [Command]
+    public void CmdMovePlayer(float i_Horizontal, float i_Vertical, bool i_Jump, bool i_BreakButton)
     {
         if (!IsStunned)
         {
@@ -93,7 +95,7 @@ public class PlayerControls : NetworkBehaviour
             Vector3 movement = new Vector3(i_Horizontal, 0.0f, i_Vertical);
             m_Rigidbody.AddForce(movement * m_MoveSpeed * m_Rigidbody.mass);
 
-            if (i_Jump)
+            if (i_Jump && m_Grounded)
             {
                 m_Rigidbody.AddForce(Vector3.up * m_JumpSpeed * m_Rigidbody.mass);
             }

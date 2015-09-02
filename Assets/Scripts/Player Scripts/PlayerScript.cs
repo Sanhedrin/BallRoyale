@@ -67,7 +67,6 @@ public class PlayerScript : NetworkBehaviour
         if (m_HealthText)
         {
             m_HealthText.UpdateHealth(m_Health);
-            m_HealthText.UpdateHealth(GetComponent<NetworkTransformSyncer>().StateID);
         }
     }
         
