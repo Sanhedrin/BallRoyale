@@ -28,7 +28,13 @@
 //    }
 //}
 
-//[AddComponentMenu("BallGame Scripts/Network/Network Player State Syncher")]
+//internal struct LocalState
+//{
+//    public NetworkState NetState { get; set; }
+//    public ControlCommandsCollection InputState { get; set; }
+//}
+
+//[AddComponentMenu("BallGame Scripts/Network/Network Player State Syncer")]
 //[NetworkSettings(channel = 2, sendInterval = 1 / ConstParams.NetTransformSyncRate)]
 //public class NetworkTransformSyncer : NetworkBehaviour
 //{
@@ -46,7 +52,10 @@
 //    private float m_LastUpdateTimeReceieved;
 
 //    private List<NetworkState> m_NetworkStates = new List<NetworkState>();
-//    private List<ControlCommandsCollection> m_SentCommands = new List<ControlCommandsCollection>();
+//    private List<LocalState> m_SentCommands = new List<LocalState>();
+
+//    [SerializeField]
+//    private float m_ClientPredictionErrorMargin = 2f;
     
 //    private void Awake()
 //    {
@@ -132,32 +141,35 @@
 //    private void updateLocalPlayerPosition(NetworkState i_State)
 //    {
 //        //We should remove all past input states that have already been processed
-//        while (m_SentCommands.Count > 0 && m_SentCommands[0].StateSentAt < i_State.LatestInputID)
+//        while (m_SentCommands.Count > 0 && m_SentCommands[0].InputState.StateSentAt < i_State.LatestInputID)
 //        {
 //            m_SentCommands.RemoveAt(0);
 //        }
 
-//        //Cancel out past physics effects.
-//        m_Rigidbody.isKinematic = true;
-//        m_Rigidbody.velocity = Vector3.zero;
-//        m_Rigidbody.Sleep();
-//        m_Rigidbody.isKinematic = false;
-
-//        //And for the input requests we haven't processed yet, we'll apply them again to the newly received position.
-//        transform.position = i_State.Position;
-//        transform.rotation = Quaternion.Euler(i_State.Rotation);
-//        transform.localScale = i_State.Scale;
-//        StateID = i_State.StateID;
-
-//        foreach (ControlCommandsCollection command in m_SentCommands)
+//        if (Vector3.Distance(i_State.Position, m_SentCommands[0].NetState.Position) > m_ClientPredictionErrorMargin)
 //        {
-//            if (command.StateSentAt <= i_State.LatestInputID)
+//            //Cancel out past physics effects.
+//            m_Rigidbody.isKinematic = true;
+//            m_Rigidbody.velocity = Vector3.zero;
+//            m_Rigidbody.Sleep();
+//            m_Rigidbody.isKinematic = false;
+
+//            //And for the input requests we haven't processed yet, we'll apply them again to the newly received position.
+//            transform.position = i_State.Position;
+//            transform.rotation = Quaternion.Euler(i_State.Rotation);
+//            transform.localScale = i_State.Scale;
+//            StateID = i_State.StateID;
+
+//            foreach (LocalState command in m_SentCommands)
 //            {
-//                m_Player.MovePlayer(command.HorizontalMovement, command.VerticalMovement, command.Jump, command.Break);
-//            }
-//            else
-//            {
-//                break;
+//                if (command.InputState.StateSentAt <= i_State.LatestInputID)
+//                {
+//                    m_Player.MovePlayer(command.InputState.HorizontalMovement, command.InputState.VerticalMovement, command.InputState.Jump, command.InputState.Break);
+//                }
+//                else
+//                {
+//                    break;
+//                }
 //            }
 //        }
 //    }
@@ -288,7 +300,19 @@
 
 //                if (!isServer)
 //                {
-//                    m_SentCommands.Add(i_ControlInput);
+//                    NetworkState netState = LgJsonNode.Create<NetworkState>();
+//                    netState.Position = transform.position;
+//                    netState.Rotation = transform.rotation.eulerAngles;
+//                    netState.StateID = StateID; 
+//                    netState.UpdateTime = Time.time;
+//                    netState.LatestInputID = InputStateID;
+//                    netState.Scale = transform.localScale;
+
+//                    m_SentCommands.Add(new LocalState()
+//                    {
+//                        InputState = i_ControlInput,
+//                        NetState = netState
+//                    });
 //                    CmdMovePlayer(i_ControlInput.HorizontalMovement, i_ControlInput.VerticalMovement, i_ControlInput.Jump, i_ControlInput.Break);
 //                }
              
