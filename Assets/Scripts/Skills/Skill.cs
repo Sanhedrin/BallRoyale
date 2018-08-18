@@ -48,7 +48,7 @@ public abstract class Skill : NetworkBehaviour
         m_Collider.enabled = false;
         //m_Renderer.enabled = false;
 
-        transform.FindChild(ConstParams.BoxPrefab).gameObject.SetActive(false);
+        transform.Find(ConstParams.BoxPrefab).gameObject.SetActive(false);
 
         OnAttachedToPlayer();
     }
